@@ -70,10 +70,14 @@ namespace Light_And_Shadow
         {
             if (Renderer != null)
             {
-                // Compute the final MVP by multiplying the model matrix with the view-projection matrix.
-                Matrix4 mvp = Transform.CalculateModel() * viewProjection;
+                // Calculate the model matrix.
+                Matrix4 model = Transform.CalculateModel();
                 
-                Renderer.Draw(mvp);
+                // Calculate the Model-View-Projection matrix.
+                Matrix4 mvp = model * viewProjection;
+                
+                // Draw the object.
+                Renderer.Draw(mvp, model);
             }
         }
     }

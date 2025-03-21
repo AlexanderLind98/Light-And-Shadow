@@ -41,6 +41,7 @@ namespace Light_And_Shadow
         private void lightTest()
         {
             Material cubeMaterial = new Material("Shaders/diffuseLightShader.vert", "Shaders/diffuseLightShader.frag");
+            //Material cubeMaterial = new Material("Shaders/ambientLightShader.vert", "Shaders/ambientLightShader.frag");
             //Material cubeMaterial = new Material("Shaders/shader.vert", "Shaders/shader.frag");
             Renderer cubeRenderer = new Renderer(cubeMaterial, new CubeMesh());
             GameObject cubeObject = new GameObject(this)

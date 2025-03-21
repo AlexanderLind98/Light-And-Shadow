@@ -14,10 +14,15 @@ namespace Light_And_Shadow.Components
             Mesh = mesh;
         }
 
-        public void Draw(Matrix4 mvp)
+        public void Draw(Matrix4 mvp, Matrix4 model)
         {
             Material.UseShader();
             Material.SetUniform("mvp", mvp);
+            Material.SetUniform("model", model);
+            Material.SetUniform("lightPos", new Vector3(1.2f, 1.0f, 2.0f));
+            Material.SetUniform("lightColor", Vector3.One);
+            Material.SetUniform("ambientStrength", 0.2f);
+            Material.SetUniform("objectColor", new Vector3(1.0f, 0.5f, 0.3f));
             Mesh.Draw();
         }
     }
