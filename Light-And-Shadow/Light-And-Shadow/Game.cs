@@ -62,10 +62,13 @@ namespace Light_And_Shadow
         {
             GameObject cameraObject = new GameObject(this);
             cameraObject.AddComponent<Camera>(60.0f, (float)Size.X, (float)Size.Y, 0.3f, 1000.0f);
+            cameraObject.AddComponent<CamMoveBehavior>();
             camera = cameraObject.GetComponent<Camera>();
             gameObjects.Add(cameraObject);
-        }
 
+            //Grab focus for cursor, locking it to window
+            CursorState = CursorState.Grabbed;
+        }
 
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
@@ -77,7 +80,7 @@ namespace Light_And_Shadow
             
             KeyboardState input = KeyboardState;
 
-            if (input.IsKeyDown(Keys.Escape))
+            if (input.IsKeyPressed(Keys.Escape))
             {
                 Close();
             }
