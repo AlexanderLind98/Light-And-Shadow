@@ -8,7 +8,6 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-// For TriangleMesh and CubeMesh
 
 namespace Light_And_Shadow
 {
@@ -41,8 +40,8 @@ namespace Light_And_Shadow
 
         private void lightTest()
         {
-            //Material cubeMaterial = new Material("Shaders/lightShader.vert", "Shaders/lightShader.frag");
-            Material cubeMaterial = new Material("Shaders/shader.vert", "Shaders/shader.frag");
+            Material cubeMaterial = new Material("Shaders/lightShader.vert", "Shaders/lightShader.frag");
+            //Material cubeMaterial = new Material("Shaders/shader.vert", "Shaders/shader.frag");
             Renderer cubeRenderer = new Renderer(cubeMaterial, new CubeMesh());
             GameObject cubeObject = new GameObject(this)
             {
