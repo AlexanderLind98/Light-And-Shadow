@@ -29,16 +29,25 @@
       <None Update="Textures\wall.jpg">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Shaders\lightShader.frag">
+      <None Update="Shaders\ambientLightShader.frag">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Shaders\lightShader.vert">
+      <None Update="Shaders\ambientLightShader.vert">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Models\Board.obj">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Models\Monkey.obj">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaders\diffuseLightShader.frag">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaders\diffuseLightShader.vert">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaders\diffuseLightShader.frag">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

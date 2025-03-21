@@ -40,7 +40,7 @@ namespace Light_And_Shadow
 
         private void lightTest()
         {
-            Material cubeMaterial = new Material("Shaders/lightShader.vert", "Shaders/lightShader.frag");
+            Material cubeMaterial = new Material("Shaders/diffuseLightShader.vert", "Shaders/diffuseLightShader.frag");
             //Material cubeMaterial = new Material("Shaders/shader.vert", "Shaders/shader.frag");
             Renderer cubeRenderer = new Renderer(cubeMaterial, new CubeMesh());
             GameObject cubeObject = new GameObject(this)
@@ -62,7 +62,7 @@ namespace Light_And_Shadow
         {
             GameObject cameraObject = new GameObject(this);
             cameraObject.AddComponent<Camera>(60.0f, (float)Size.X, (float)Size.Y, 0.3f, 1000.0f);
-            cameraObject.AddComponent<CamMoveBehavior>();
+            //cameraObject.AddComponent<CamMoveBehavior>();
             camera = cameraObject.GetComponent<Camera>();
             gameObjects.Add(cameraObject);
 

@@ -63,14 +63,14 @@ namespace Light_And_Shadow
 
             // Define vertex attribute layout.
             // Here we assume the first 3 floats are position.
-            GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, vertexStride, 0);
+            GL.EnableVertexAttribArray(0);
 
-            // If there are extra floats, assume the next 2 are texture coordinates.
+            // If there are extra floats, assume the next 2 are texture coordinates and 1 normal.
             if (vertexStride > 3 * sizeof(float))
             {
-                GL.EnableVertexAttribArray(1);
                 GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, vertexStride, 3 * sizeof(float));
+                GL.EnableVertexAttribArray(1);
             }
 
             GL.BindVertexArray(0);
