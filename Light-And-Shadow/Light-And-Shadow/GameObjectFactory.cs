@@ -38,12 +38,10 @@ public static class GameObjectFactory
         return cubeObject;
     }
 
-    public static GameObject CreateObjModel(Game gameInstance)
+    public static GameObject CreateObjModel(Game gameInstance, string modelName)
     {
         var objLoader = new OBJLoader();
-        //objLoader.Load("Models/Cube.obj");
-        //objLoader.Load("Models/Board.obj");
-        objLoader.Load("Models/Cube.obj");
+        objLoader.Load($"Models/{modelName}.obj");
 
         var modelData = new Model
         {
@@ -93,15 +91,14 @@ public static class GameObjectFactory
         Renderer modelRenderer = new Renderer(modelMaterial, modelMesh);
         GameObject modelObject = new GameObject(gameInstance)
         {
-            Renderer = modelRenderer
+            Renderer = modelRenderer,
+            Transform =
+            {
+                Position = new Vector3(0, -5, 0),
+            }
         };
-        modelObject.Transform.Position = new Vector3(10, 0, -10);
-        modelObject.Transform.Scale = new Vector3(0.5f);
-        modelObject.Transform.Rotation = new Vector3(
-            modelObject.Transform.Rotation.X,
-            MathHelper.DegreesToRadians(15),
-            modelObject.Transform.Rotation.Z);
-        modelObject.AddComponent<MoveObjectBehaviour>();
+        
+        // modelObject.AddComponent<MoveObjectBehaviour>();
 
         return modelObject;
     }
