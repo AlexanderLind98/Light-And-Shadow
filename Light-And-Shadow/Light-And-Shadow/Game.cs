@@ -32,17 +32,17 @@ namespace Light_And_Shadow
             // Load game objects from factory.
             gameObjects.Add(GameObjectFactory.CreateTriangle(this));
             // gameObjects.Add(GameObjectFactory.CreateCube(this));
-            gameObjects.Add(GameObjectFactory.CreateObjModel(this));
+            //gameObjects.Add(GameObjectFactory.CreateObjModel(this));
 
-            // lightTest();
+            lightTest();
 
             SetupCamera();
         }
 
         private void lightTest()
         {
-            Material cubeMaterial = new Material("Shaders/lightShader.vert", "Shaders/lightShader.frag");
-            //Material cubeMaterial = new Material("Shaders/shader.vert", "Shaders/shader.frag");
+            //Material cubeMaterial = new Material("Shaders/lightShader.vert", "Shaders/lightShader.frag");
+            Material cubeMaterial = new Material("Shaders/shader.vert", "Shaders/shader.frag");
             Renderer cubeRenderer = new Renderer(cubeMaterial, new CubeMesh());
             GameObject cubeObject = new GameObject(this)
             {
