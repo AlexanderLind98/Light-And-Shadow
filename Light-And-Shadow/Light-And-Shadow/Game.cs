@@ -49,7 +49,7 @@ namespace Light_And_Shadow
                 Renderer = cubeRenderer,
                 Transform =
                 {
-                    Position = new Vector3(1, 1, 1)
+                    Position = new Vector3(0.0f, 0.0f, 0.0f),
                 }
             };
             cubeObject.AddComponent<MoveObjectBehaviour>();
@@ -68,7 +68,7 @@ namespace Light_And_Shadow
             gameObjects.Add(cameraObject);
 
             //Grab focus for cursor, locking it to window
-            CursorState = CursorState.Grabbed;
+            //CursorState = CursorState.Grabbed;
         }
 
         protected override void OnUpdateFrame(FrameEventArgs args)

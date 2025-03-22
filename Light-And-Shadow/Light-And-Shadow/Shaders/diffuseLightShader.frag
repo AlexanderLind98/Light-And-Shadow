@@ -1,6 +1,6 @@
 #version 460 core
 
-in vec3 Normal;
+flat in vec3 Normal;
 in vec3 FragPos;
 
 out vec4 FragColor;
@@ -13,6 +13,11 @@ uniform vec3 objectColor;
 void main()
 {
     vec3 norm = normalize(Normal);
+    
+    // Derivatives for normal mapping
+    //vec3 norm = normalize(cross(dFdx(FragPos), dFdy(FragPos)));
+
+
     vec3 lightDir = normalize(lightPos - FragPos);
 
     vec3 ambient = ambientStrength * lightColor;
@@ -22,4 +27,9 @@ void main()
 
     vec3 result = (ambient + diffuse) * objectColor;
     FragColor = vec4(result, 1.0);
+
+    // tester normalen
+    //FragColor = vec4(normalize(Normal) * 0.5 + 0.5, 1.0);
+    //FragColor = vec4(norm * 0.5 + 0.5, 1.0);
+
 }
