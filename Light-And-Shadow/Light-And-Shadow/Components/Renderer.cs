@@ -19,7 +19,7 @@ namespace Light_And_Shadow.Components
             Material.UseShader();
             Material.SetUniform("mvp", mvp);
             Material.SetUniform("model", model);
-            Material.SetUniform("lightPos", new Vector3(3.0f, 3.0f, 3.0f));
+            Material.SetUniform("lightPos", new Vector3(0.0f, 3.0f, -3.0f));
             Material.SetUniform("lightColor", Vector3.One);
             Material.SetUniform("ambientStrength", 0.2f);
             Material.SetUniform("objectColor", new Vector3(1.0f, 0.5f, 0.3f));

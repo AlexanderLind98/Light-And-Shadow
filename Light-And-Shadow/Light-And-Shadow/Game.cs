@@ -49,7 +49,7 @@ namespace Light_And_Shadow
                 Renderer = cubeRenderer,
                 Transform =
                 {
-                    Position = new Vector3(0.0f, 0.0f, 0.0f),
+                    Position = new Vector3(0.0f, -2.0f, 1.0f),
                 }
             };
             cubeObject.AddComponent<MoveObjectBehaviour>();
