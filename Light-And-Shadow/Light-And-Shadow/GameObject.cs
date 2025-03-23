@@ -66,7 +66,7 @@ namespace Light_And_Shadow
             }
         }
 
-        public void Draw(Matrix4 viewProjection)
+        public void Draw(Matrix4 viewProjection, Vector3 cameraPosition)
         {
             if (Renderer != null)
             {
@@ -77,7 +77,7 @@ namespace Light_And_Shadow
                 Matrix4 mvp = model * viewProjection;
                 
                 // Draw the object.
-                Renderer.Draw(mvp, model);
+                Renderer.Draw(mvp, model, cameraPosition);
             }
         }
     }

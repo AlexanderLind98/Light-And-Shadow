@@ -20,7 +20,7 @@ namespace Light_And_Shadow
             : base(gameWindowSettings, nativeWindowSettings)
         {
             CenterWindow();
-            GL.ClearColor(Color4.CornflowerBlue);
+            GL.ClearColor(Color4.Gray);
         }
         
         protected override void OnLoad()
@@ -40,7 +40,8 @@ namespace Light_And_Shadow
 
         private void lightTest()
         {
-            Material cubeMaterial = new Material("Shaders/diffuseLightShader.vert", "Shaders/diffuseLightShader.frag");
+            Material cubeMaterial = new Material("Shaders/specularLightShader.vert", "Shaders/specularLightShader.frag");
+            //Material cubeMaterial = new Material("Shaders/diffuseLightShader.vert", "Shaders/diffuseLightShader.frag");
             //Material cubeMaterial = new Material("Shaders/ambientLightShader.vert", "Shaders/ambientLightShader.frag");
             //Material cubeMaterial = new Material("Shaders/shader.vert", "Shaders/shader.frag");
             Renderer cubeRenderer = new Renderer(cubeMaterial, new CubeMesh());
@@ -49,7 +50,8 @@ namespace Light_And_Shadow
                 Renderer = cubeRenderer,
                 Transform =
                 {
-                    Position = new Vector3(0.0f, 0.0f, 0.0f),
+                    // position a bit below middle closer to camera
+                    Position = new Vector3(0.0f, -2.0f, 1.0f),
                 }
             };
             cubeObject.AddComponent<MoveObjectBehaviour>();
@@ -93,10 +95,12 @@ namespace Light_And_Shadow
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             Matrix4 viewProjection = camera.GetViewProjection();
+            Vector3 cameraPos = camera.Position;
             foreach (var obj in gameObjects)
             {
-                obj.Draw(viewProjection);
+                obj.Draw(viewProjection, cameraPos);
             }
+
             
             SwapBuffers();
         }
