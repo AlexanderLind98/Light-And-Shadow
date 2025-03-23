@@ -13,6 +13,8 @@ namespace Light_And_Shadow
 {
     public class Game : GameWindow
     {
+        private int debugMode = 0;
+ 
         private List<GameObject> gameObjects = new List<GameObject>();
         private Camera camera;
 
@@ -81,12 +83,28 @@ namespace Light_And_Shadow
                 obj.Update(args);
             }
             
-            KeyboardState input = KeyboardState;
+            var input = KeyboardState;
+
+            // Shader Debug mode switch
+            if (input.IsKeyPressed(Keys.F1)) debugMode = 1;
+            if (input.IsKeyPressed(Keys.F2)) debugMode = 2;
+            if (input.IsKeyPressed(Keys.F3)) debugMode = 3;
+            if (input.IsKeyPressed(Keys.F4)) debugMode = 0;
+
 
             if (input.IsKeyPressed(Keys.Escape))
             {
                 Close();
             }
+            
+            // Update window title with debug mode
+            Title = debugMode switch
+            {
+                1 => "Debug Mode: Ambient",
+                2 => "Debug Mode: Diffuse",
+                3 => "Debug Mode: Specular",
+                _ => "Debug Mode: Combined"
+            };
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -98,7 +116,7 @@ namespace Light_And_Shadow
             Vector3 cameraPos = camera.Position;
             foreach (var obj in gameObjects)
             {
-                obj.Draw(viewProjection, cameraPos);
+                obj.Draw(viewProjection, cameraPos, debugMode);
             }
 
             

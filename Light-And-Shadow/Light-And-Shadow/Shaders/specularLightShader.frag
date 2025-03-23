@@ -1,5 +1,9 @@
 #version 460 core
 
+// debug mode input 
+uniform int debugMode; // 0 = full, 1 = ambient, 2 = diffuse, 3 = specular
+
+
 flat in vec3 Normal;
 in vec3 FragPos;
 
@@ -10,6 +14,9 @@ uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform float ambientStrength;
 uniform vec3 objectColor;
+uniform float shininess;
+uniform float specularStrength;
+
 
 void main()
 {
@@ -27,18 +34,34 @@ void main()
     vec3 diffuse = diff * lightColor;
 
     // Specular
-    float specularStrength = 0.5; // lav til uniform og flyt ud??
-    float shininess = 32.0; // lav til uniform og flyt ud??
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     vec3 specular = specularStrength * spec * lightColor;
+
+    // Final lighting based on debug mode
+    vec3 result;
+    if (debugMode == 1)
+    result = ambient;
+    else if (debugMode == 2)
+    result = diffuse;
+    else if (debugMode == 3)
+    result = specular;
+    else
+    result = (ambient + diffuse + specular);
+
+    // Final color
+    FragColor = vec4(result * objectColor, 1.0);
 
     // Final color
     //vec3 result = ambient + diffuse + specular;
-    vec3 result = (ambient + diffuse + specular) * objectColor;
-    FragColor = vec4(result, 1.0);
+    //vec3 result = (ambient + diffuse + specular) * objectColor;
+    //FragColor = vec4(result, 1.0);
 
     // Tester specular
-    //FragColor = vec4(specular, 1.0);
+//    vec3 specular = spec * lightColor;
+//    FragColor = vec4(specular, 1.0);
+//    float rawDot = dot(viewDir, reflectDir);
+//    FragColor = vec4(vec3(rawDot), 1.0);
+
 
     // tester normalen
     //FragColor = vec4(normalize(Normal) * 0.5 + 0.5, 1.0);
