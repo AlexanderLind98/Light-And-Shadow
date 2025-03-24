@@ -50,7 +50,7 @@ public abstract class World
         Vector3 cameraPos = camera.Position;
         foreach (var obj in GameObjects)
         {
-            obj.Draw(viewProjection, cameraPos, this, debugMode);
+            obj.Draw(viewProjection, camera, this, debugMode);
         }
     }
 
