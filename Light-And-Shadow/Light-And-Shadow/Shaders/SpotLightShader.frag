@@ -60,8 +60,8 @@ void main()
 
     vec3 LightToPixel = normalize(light.position - FragPos  );
     float theta = dot(LightToPixel, normalize(-light.direction));
-    float epsilon   = light.cutOff - light.outerCutOff;
-    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+    float epsilon = 0.01;  // Soft transition range
+    float intensity = smoothstep(light.cutOff - epsilon, light.cutOff, theta);
 
     ambient *= attenuation;
     diffuse *= intensity;
@@ -81,12 +81,12 @@ void main()
 
 //    FragColor = vec4(light.position, 1.0);
 
-    if(theta > light.cutOff)
-    {
-        FragColor = vec4(result, 1.0);
-    }
-    else
-    {
-        FragColor = vec4(ambient, 1.0);
-    }
+/**    // Smooth spotlight effect
+    float epsilon = 0.1;  // Soft transition range
+    float intensity = smoothstep(light.cutOff - epsilon, light.cutOff, theta);*/
+
+    // Apply intensity to lighting result
+    vec3 finalColor = (ambient + diffuse + specular) * intensity + ambient;
+    FragColor = vec4(finalColor, 1.0);
+
 }
