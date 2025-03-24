@@ -47,10 +47,12 @@ public static class GameObjectFactory
         {
             Vertices = objLoader.Vertices,
             TextureCoords = objLoader.TextureCoords,
-            Normals = objLoader.Normals, 
+            Normals = objLoader.Normals,
             Indices = objLoader.Indices.Select(i => (uint)i).ToList(),
-            TextureIndices = objLoader.TextureIndices
+            TextureIndices = objLoader.TextureIndices,
+            NormalIndices = objLoader.NormalIndices
         };
+
 
 
         // Build a complete interleaved vertex array
