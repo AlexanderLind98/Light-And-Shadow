@@ -75,8 +75,6 @@ StyleCopReport.xml
 *.ilk
 *.meta
 *.obj
-!Light-And-Shadow/Models/
-!Light-And-Shadow/Models/*.obj
 *.iobj
 *.pch
 *.pdb
@@ -99,6 +97,9 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
+
+!Light-And-Shadow/Models/
+!Light-And-Shadow/Models/*.obj
 
 # Chutzpah Test files
 _Chutzpah*
