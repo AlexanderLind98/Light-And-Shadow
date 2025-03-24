@@ -17,7 +17,7 @@ public class LightTestWorld(Game game) : World(game)
 
         cubeObject.Transform.Position += new Vector3(0, -2, 1);
         
-        Material cubeMaterial = new mat_chrome();
+        Material cubeMaterial = new mat_gold();
         Renderer cubeRenderer = new Renderer(cubeMaterial, modelMesh);
       
         cubeObject.Renderer = cubeRenderer;
