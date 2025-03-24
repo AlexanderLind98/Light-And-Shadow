@@ -59,6 +59,7 @@ void main()
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
 
     vec3 LightToPixel = normalize(light.position - FragPos  );
+    
     float theta = dot(LightToPixel, normalize(-light.direction));
     float epsilon = 0.01;  // Soft transition range
     float intensity = smoothstep(light.cutOff - epsilon, light.cutOff, theta);

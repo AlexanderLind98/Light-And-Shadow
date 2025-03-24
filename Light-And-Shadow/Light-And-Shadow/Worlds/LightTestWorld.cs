@@ -16,7 +16,7 @@ public class LightTestWorld(Game game) : World(game)
         (GameObject roomObject, Mesh roomMesh) = GameObjectFactory.CreateObjModel(Game, "Room");
         Renderer roomRenderer = new Renderer(new mat_concrete(), roomMesh);
         roomObject.Renderer = roomRenderer;
-        // GameObjects.Add(roomObject);
+        GameObjects.Add(roomObject);
         
         (GameObject cube1Object, Mesh model1Mesh) = GameObjectFactory.CreateObjModel(Game, "Monkey");
         (GameObject cube2Object, Mesh model2Mesh) = GameObjectFactory.CreateObjModel(Game, "SmoothCube");
