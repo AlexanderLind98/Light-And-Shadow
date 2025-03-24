@@ -12,7 +12,7 @@ public class LightTestWorld(Game game) : World(game)
     {
         base.ConstructWorld();
 
-        (GameObject cubeObject, Mesh modelMesh) = GameObjectFactory.CreateObjModel(Game, "IcoSphere");
+        (GameObject cubeObject, Mesh modelMesh) = GameObjectFactory.CreateObjModel(Game, "Cube");
         
         cubeObject.Transform.Position += new Vector3(0, -2, 1);
         
