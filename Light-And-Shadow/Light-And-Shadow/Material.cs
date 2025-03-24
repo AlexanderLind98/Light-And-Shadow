@@ -51,6 +51,10 @@ namespace OpenTK_OBJ
             {
                 shader.SetFloat(name, uniformFloat);
             }
+            else if (uniform is Vector3 uniformVec3)
+            {
+                shader.SetVector3(name, uniformVec3);
+            }
             else if (uniform is Matrix4 uniformMatrix)
             {
                 shader.SetMatrix(name, uniformMatrix);

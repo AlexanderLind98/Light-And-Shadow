@@ -1,6 +1,7 @@
 using Light_And_Shadow.Behaviors;
 using Light_And_Shadow.Components;
 using Light_And_Shadow.Shapes;
+using Light_And_Shadow.Worlds;
 using OpenTK_OBJ;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -14,102 +15,84 @@ namespace Light_And_Shadow
 {
     public class Game : GameWindow
     {
-        private List<GameObject> gameObjects = new List<GameObject>();
-        private Camera camera;
+        private int debugMode = 0;
+        
+        private World currentWorld;
 
         public Game(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
             CenterWindow();
             GL.ClearColor(Color4.CornflowerBlue);
+            
+            //currentWorld = new TestWorld(this);
+            currentWorld = new LightTestWorld(this);
         }
         
         protected override void OnLoad()
         {
             base.OnLoad();
-            GL.Enable(EnableCap.DepthTest);
-
-            // Load game objects from factory.
-            gameObjects.Add(GameObjectFactory.CreateTriangle(this));
-            // gameObjects.Add(GameObjectFactory.CreateCube(this));
-            gameObjects.Add(GameObjectFactory.CreateObjModel(this));
-
-            // lightTest();
-
-            SetupCamera();
-        }
-
-        private void lightTest()
-        {
-            Material cubeMaterial = new Material("Shaders/lightShader.vert", "Shaders/lightShader.frag");
-            //Material cubeMaterial = new Material("Shaders/shader.vert", "Shaders/shader.frag");
-            Renderer cubeRenderer = new Renderer(cubeMaterial, new CubeMesh());
-            GameObject cubeObject = new GameObject(this)
-            {
-                Renderer = cubeRenderer,
-                Transform =
-                {
-                    Position = new Vector3(1, 1, 1)
-                }
-            };
-            cubeObject.AddComponent<MoveObjectBehaviour>();
-            gameObjects.Add(cubeObject);
-        }
-
-        /// <summary>
-        /// Sets up the main camera.
-        /// </summary>
-        private void SetupCamera()
-        {
-            GameObject cameraObject = new GameObject(this);
-            cameraObject.AddComponent<Camera>(60.0f, (float)Size.X, (float)Size.Y, 0.3f, 1000.0f);
-            cameraObject.AddComponent<CamMoveBehavior>();
-            camera = cameraObject.GetComponent<Camera>();
-            gameObjects.Add(cameraObject);
-
-            //Grab focus for cursor, locking it to window
-            CursorState = CursorState.Grabbed;
+            
+            currentWorld.LoadWorld();
         }
 
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
             base.OnUpdateFrame(args);
-            foreach (var obj in gameObjects)
-            {
-                obj.Update(args);
-            }
+
+            currentWorld.UpdateWorld(args);
             
             KeyboardState input = KeyboardState;
+
+            // // Proof of concept - able to toggle between worlds
+            // if (input.IsKeyPressed(Keys.Enter))
+            // {
+            //     currentWorld.UnloadWorld();
+            //     if(Title == "Arches")
+            //     {
+            //         currentWorld = new TestWorld(this);
+            //         currentWorld.LoadWorld();
+            //     }
+            //     else if (Title == "Test World")
+            //     {
+            //         currentWorld = new ArchesWorld(this);
+            //         currentWorld.LoadWorld();
+            //     }
+            // }
+
+            // Shader Debug mode switch
+            if (input.IsKeyPressed(Keys.F1)) debugMode = 1;
+            if (input.IsKeyPressed(Keys.F2)) debugMode = 2;
+            if (input.IsKeyPressed(Keys.F3)) debugMode = 3;
+            if (input.IsKeyPressed(Keys.F4)) debugMode = 0;
 
             if (input.IsKeyPressed(Keys.Escape))
             {
                 Close();
             }
+            
+            // Update window title with debug mode
+            Title = debugMode switch
+            {
+                1 => "Debug Mode: Ambient",
+                2 => "Debug Mode: Diffuse",
+                3 => "Debug Mode: Specular",
+                _ => "Debug Mode: Combined"
+            };
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             base.OnRenderFrame(args);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-            Matrix4 viewProjection = camera.GetViewProjection();
-            foreach (var obj in gameObjects)
-            {
-                obj.Draw(viewProjection);
-            }
+            
+            currentWorld.DrawWorld(args, debugMode);
             
             SwapBuffers();
         }
 
         protected override void OnUnload()
         {
-            foreach (var obj in gameObjects)
-            {
-                if (obj.Renderer?.Mesh is IDisposable disposableMesh)
-                {
-                    disposableMesh.Dispose();
-                }
-            }
+            currentWorld.UnloadWorld();
             
             base.OnUnload();
         }

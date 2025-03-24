@@ -15,6 +15,9 @@ namespace Light_And_Shadow
         private float aspectY;
         private float near;
         private float far;
+        
+        public Vector3 Position => gameObject.Transform.Position;
+
 
         public Camera(GameObject gameObject, Game window, float FOV, float aspectX, float aspectY,float near,float far) : base(gameObject, window)
         {

@@ -38,12 +38,10 @@ public static class GameObjectFactory
         return cubeObject;
     }
 
-    public static GameObject CreateObjModel(Game gameInstance)
+    public static (GameObject, Mesh) CreateObjModel(Game gameInstance, string modelName)
     {
         var objLoader = new OBJLoader();
-        //objLoader.Load("Models/Cube.obj");
-        //objLoader.Load("Models/Board.obj");
-        objLoader.Load("Models/Cube.obj");
+        objLoader.Load($"Models/{modelName}.obj");
 
         var modelData = new Model
         {
@@ -86,23 +84,15 @@ public static class GameObjectFactory
 
         Mesh modelMesh = new Mesh(vertexArray.ToArray(), indices.ToArray(), 5);
 
-        Texture wallTexture = new Texture("Textures/wall.jpg");
-        var uniforms = new Dictionary<string, object> { { "texture0", wallTexture } };
+       // Texture wallTexture = new Texture("Textures/wall.jpg");
+        //var uniforms = new Dictionary<string, object> { { "texture0", wallTexture } };
 
-        Material modelMaterial = new Material("Shaders/modelShader.vert", "Shaders/shader.frag", uniforms);
-        Renderer modelRenderer = new Renderer(modelMaterial, modelMesh);
-        GameObject modelObject = new GameObject(gameInstance)
-        {
-            Renderer = modelRenderer
-        };
-        modelObject.Transform.Position = new Vector3(10, 0, -10);
-        modelObject.Transform.Scale = new Vector3(0.5f);
-        modelObject.Transform.Rotation = new Vector3(
-            modelObject.Transform.Rotation.X,
-            MathHelper.DegreesToRadians(15),
-            modelObject.Transform.Rotation.Z);
-        modelObject.AddComponent<MoveObjectBehaviour>();
+        //Material modelMaterial = new Material("Shaders/modelShader.vert", "Shaders/shader.frag", uniforms);
+        //Renderer modelRenderer = new Renderer(modelMaterial, modelMesh);
+        GameObject modelObject = new GameObject(gameInstance);
+        
+        // modelObject.AddComponent<MoveObjectBehaviour>();
 
-        return modelObject;
+        return (modelObject, modelMesh);
     }
 }
