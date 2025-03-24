@@ -24,9 +24,11 @@ public class LightTestWorld(Game game) : World(game)
         roomObject.Transform.Position += new Vector3(0, -2, 1);
         roomObject.Transform.Scale = new Vector3(5, 5, 5);
         cube1Object.Transform.Position += new Vector3(-2, 0, 0);
-        cube1Object.Transform.Rotation += new Vector3(1.0f, 0.3f, 0.5f);
         cube2Object.Transform.Position += new Vector3(2, 0, 0);
-        cube2Object.Transform.Rotation += new Vector3(-1.0f, 0.3f, 0.5f);
+        // cube2Object.Transform.Rotation += new Vector3(1.0f, 0.0f, 0.0f);
+
+        // RotateObjectBehavior rotator = new RotateObjectBehavior(cube2Object, Game);
+        cube2Object.AddComponent<RotateObjectBehavior>();
         
         Renderer cube1Renderer = new Renderer(new mat_chrome(), model1Mesh);
         Renderer cube2Renderer = new Renderer(new mat_gold(), model2Mesh);
@@ -36,7 +38,6 @@ public class LightTestWorld(Game game) : World(game)
 
         GameObjects.Add(cube1Object);
         GameObjects.Add(cube2Object);
-        
         
         //game.Title = "Light Test";
     }
