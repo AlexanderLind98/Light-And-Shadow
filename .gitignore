@@ -3,9 +3,6 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
-!Models/
-!Models/*.obj
-
 # User-specific files
 *.rsuser
 *.suo
@@ -78,6 +75,8 @@ StyleCopReport.xml
 *.ilk
 *.meta
 *.obj
+!Models/
+!Models/*.obj
 *.iobj
 *.pch
 *.pdb
