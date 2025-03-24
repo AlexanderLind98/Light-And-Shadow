@@ -13,16 +13,30 @@ public class LightTestWorld(Game game) : World(game)
     {
         base.ConstructWorld();
 
-        (GameObject cubeObject, Mesh modelMesh) = GameObjectFactory.CreateObjModel(Game, "Room");
-
-        cubeObject.Transform.Position += new Vector3(0, -2, 1);
+        (GameObject roomObject, Mesh roomMesh) = GameObjectFactory.CreateObjModel(Game, "Room");
+        Renderer roomRenderer = new Renderer(new mat_concrete(), roomMesh);
+        roomObject.Renderer = roomRenderer;
+        GameObjects.Add(roomObject);
         
-        Material cubeMaterial = new mat_gold();
-        Renderer cubeRenderer = new Renderer(cubeMaterial, modelMesh);
-      
-        cubeObject.Renderer = cubeRenderer;
-        cubeObject.AddComponent<MoveObjectBehaviour>();
-        GameObjects.Add(cubeObject);
+        (GameObject cube1Object, Mesh model1Mesh) = GameObjectFactory.CreateObjModel(Game, "Cube");
+        (GameObject cube2Object, Mesh model2Mesh) = GameObjectFactory.CreateObjModel(Game, "Cube");
+
+        roomObject.Transform.Position += new Vector3(0, -2, 1);
+        roomObject.Transform.Scale = new Vector3(5, 5, 5);
+        cube1Object.Transform.Position += new Vector3(-2, 0, 0);
+        cube1Object.Transform.Rotation += new Vector3(1.0f, 0.3f, 0.5f);
+        cube2Object.Transform.Position += new Vector3(2, 0, 0);
+        cube2Object.Transform.Rotation += new Vector3(-1.0f, 0.3f, 0.5f);
+        
+        Renderer cube1Renderer = new Renderer(new mat_chrome(), model1Mesh);
+        Renderer cube2Renderer = new Renderer(new mat_gold(), model2Mesh);
+        
+        cube1Object.Renderer = cube1Renderer;
+        cube2Object.Renderer = cube2Renderer;
+
+        GameObjects.Add(cube1Object);
+        GameObjects.Add(cube2Object);
+        
         
         //game.Title = "Light Test";
     }

@@ -13,22 +13,19 @@ struct Material
 
 struct Light
 {
-    vec3 position;
+    vec3 direction;
     
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
 };
 
-flat in vec3 Normal;
+in vec3 Normal;
 in vec3 FragPos;
 
 out vec4 FragColor;
 
 uniform vec3 viewPos;
-uniform vec3 lightPos;
-uniform vec3 lightColor;
-
 
 uniform Material material;
 uniform Light light;
@@ -37,7 +34,7 @@ void main()
 {
     // Normalize input
     vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(lightPos - FragPos);
+    vec3 lightDir = normalize(-light.direction);
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
 
@@ -64,16 +61,9 @@ void main()
 
     // Final color
     FragColor = vec4(result, 1.0);
-
-    
-    // Tester specular
-//    vec3 specular = spec * lightColor;
-//    FragColor = vec4(specular, 1.0);
-//    float rawDot = dot(viewDir, reflectDir);
-//    FragColor = vec4(vec3(rawDot), 1.0);
-
+//    FragColor = vec4(lightDir * 0.5 + 0.5, 1.0);
 
     // tester normalen
-    //FragColor = vec4(normalize(Normal) * 0.5 + 0.5, 1.0);
-    //FragColor = vec4(norm * 0.5 + 0.5, 1.0);
+//    FragColor = vec4(normalize(Normal) * 0.5 + 0.5, 1.0);
+//    FragColor = vec4(norm * 0.5 + 0.5, 1.0);
 }

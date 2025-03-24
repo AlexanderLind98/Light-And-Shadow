@@ -11,6 +11,7 @@ public abstract class World
     protected readonly List<GameObject> GameObjects = [];
     private Camera camera;
     protected readonly Game Game;
+    public Vector3 SunDirection = new Vector3(-0.2f, -1.0f, -0.3f); //Set default sun direction;
 
     protected World(Game game)
     {
@@ -49,7 +50,7 @@ public abstract class World
         Vector3 cameraPos = camera.Position;
         foreach (var obj in GameObjects)
         {
-            obj.Draw(viewProjection, cameraPos, debugMode);
+            obj.Draw(viewProjection, cameraPos, this, debugMode);
         }
     }
 
