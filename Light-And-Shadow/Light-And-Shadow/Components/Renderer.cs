@@ -21,19 +21,16 @@ namespace Light_And_Shadow.Components
             Material.SetUniform("mvp", mvp);
             Material.SetUniform("model", model);
             
-            Vector3 lightDirectionInObjectSpace = Vector3.TransformNormal(currentWorld.SunDirection, Matrix4.Invert(model));
-            Console.WriteLine($"Light Direction (Object Space): {lightDirectionInObjectSpace}");
-            //Material.SetUniform("light.direction", Vector3.Normalize(currentWorld.SunDirection));
-            
-            //Matrix4 normalMatrix = Matrix4.Transpose(Matrix4.Invert(model));
             Matrix4 normalMatrix = Matrix4.Invert(model);
 
             Material.SetUniform("normalMatrix", normalMatrix); // Correct normal matrix passed to the shader
 
             // Set the transformed light direction
-            //Material.SetUniform("light.direction", Vector3.Normalize(lightDirectionInObjectSpace));
             Material.SetUniform("light.direction", Vector3.Normalize(currentWorld.SunDirection));
-
+            Material.SetUniform("light.position", new Vector3(0, 5, 0));
+            Material.SetUniform("light.constant", 1.0f);
+            Material.SetUniform("light.linear", 0.09f);
+            Material.SetUniform("light.quadratic", 0.032f);
 
             Material.SetUniform("viewPos", cameraPosition);
 
