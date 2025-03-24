@@ -23,7 +23,7 @@ namespace Light_And_Shadow
             CenterWindow();
             GL.ClearColor(Color4.CornflowerBlue);
             
-            currentWorld = new ArchesWorld(this);
+            currentWorld = new TestWorld(this);
             // currentWorld = new LightTest(this);
         }
         
