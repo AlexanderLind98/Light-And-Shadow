@@ -51,11 +51,7 @@ void main()
     // Final color
     FragColor = vec4(result * objectColor, 1.0);
 
-    // Final color
-    //vec3 result = ambient + diffuse + specular;
-    //vec3 result = (ambient + diffuse + specular) * objectColor;
-    //FragColor = vec4(result, 1.0);
-
+    
     // Tester specular
 //    vec3 specular = spec * lightColor;
 //    FragColor = vec4(specular, 1.0);

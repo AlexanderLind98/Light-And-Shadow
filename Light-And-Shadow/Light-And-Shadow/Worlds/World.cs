@@ -2,6 +2,7 @@ using Light_And_Shadow.Behaviors;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Light_And_Shadow.Worlds;
 
@@ -39,14 +40,16 @@ public abstract class World
         }
     }
 
-    public void DrawWorld(FrameEventArgs args)
+    public void DrawWorld(FrameEventArgs args, int debugMode)
     {
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
         Matrix4 viewProjection = camera.GetViewProjection();
+        
+        Vector3 cameraPos = camera.Position;
         foreach (var obj in GameObjects)
         {
-            obj.Draw(viewProjection);
+            obj.Draw(viewProjection, cameraPos, debugMode);
         }
     }
 

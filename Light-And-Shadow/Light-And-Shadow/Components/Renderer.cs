@@ -7,7 +7,7 @@ namespace Light_And_Shadow.Components
     {
         public Material Material { get; set; }
         public Mesh Mesh { get; set; }
-
+        
         public Renderer(Material material, Mesh mesh)
         {
             Material = material;
@@ -27,8 +27,6 @@ namespace Light_And_Shadow.Components
             Material.SetUniform("shininess", 256.0f);
             Material.SetUniform("specularStrength", 10.0f);
             Material.SetUniform("debugMode", currentDebugMode); 
-
-
             
             Mesh.Draw();
         }
