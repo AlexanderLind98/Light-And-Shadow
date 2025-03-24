@@ -1,5 +1,6 @@
 using Light_And_Shadow.Behaviors;
 using Light_And_Shadow.Components;
+using Light_And_Shadow.Materials;
 using Light_And_Shadow.Shapes;
 using OpenTK_OBJ;
 using OpenTK.Mathematics;
@@ -13,11 +14,10 @@ public class LightTestWorld(Game game) : World(game)
         base.ConstructWorld();
 
         (GameObject cubeObject, Mesh modelMesh) = GameObjectFactory.CreateObjModel(Game, "Cube");
-        
+
         cubeObject.Transform.Position += new Vector3(0, -2, 1);
         
-        Material cubeMaterial = new Material("Shaders/specularLightShader.vert", "Shaders/specularLightShader.frag");
-        
+        Material cubeMaterial = new mat_chrome();
         Renderer cubeRenderer = new Renderer(cubeMaterial, modelMesh);
       
         cubeObject.Renderer = cubeRenderer;

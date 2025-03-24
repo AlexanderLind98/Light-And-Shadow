@@ -11,9 +11,17 @@ namespace OpenTK_OBJ
     /// </summary>
     public class Material
     {
-        private Shader shader;
-        private Dictionary<string, object> uniforms = new Dictionary<string, object>();
+        protected Shader shader;
+        protected Dictionary<string, object> uniforms = new Dictionary<string, object>();
         private Dictionary<int, Texture> textures = new Dictionary<int, Texture>();
+
+        protected void UpdateUniforms()
+        {
+            foreach (KeyValuePair<string,object> uniform in uniforms)
+            {
+                SetUniform(uniform.Key, uniform.Value);
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Material"/> class.
@@ -32,6 +40,11 @@ namespace OpenTK_OBJ
             {
                 SetUniform(uniform.Key, uniform.Value);
             }
+        }
+
+        public Material()
+        {
+            shader = new Shader("Shaders/materialLightShader.vert", "Shaders/materialLightShader.frag");
         }
 
         /// <summary>
