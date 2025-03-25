@@ -56,6 +56,6 @@ public class MultiLightTestWorld(Game game) : World(game)
         
         SpotLights.Add(new SpotLight(this, Color4.Red, 
             new Vector3(0,0,-9),
-            new Vector3(0f, 1f, 0f)));
+            new Vector3(1.0f, 1.0f, 0.0f)));
     }
 }

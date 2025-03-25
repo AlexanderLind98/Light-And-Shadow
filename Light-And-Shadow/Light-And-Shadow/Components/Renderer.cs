@@ -48,7 +48,7 @@ namespace Light_And_Shadow.Components
                 Material.SetUniform($"pointLights[{i}].position", currentWorld.PointLights[i].Transform.Position);
                 
                 //Colors
-                Material.SetUniform($"pointLights[{i}].ambient", currentWorld.GetSkyColor() / 255.0f);
+                Material.SetUniform($"pointLights[{i}].ambient", currentWorld.GetSkyColor() / 255);
                 Material.SetUniform($"pointLights[{i}].diffuse", currentWorld.PointLights[i].LightColor);
                 Material.SetUniform($"pointLights[{i}].specular", currentWorld.PointLights[i].LightColor);
                 
@@ -86,7 +86,7 @@ namespace Light_And_Shadow.Components
                     currentWorld.SpotLights[i].OuterRadius)));
                 
                 //Color
-                Material.SetUniform($"spotLights[{i}].ambient", currentWorld.GetSkyColor() / 255f);
+                Material.SetUniform($"spotLights[{i}].ambient", currentWorld.GetSkyColor() / 255);
                 Material.SetUniform($"spotLights[{i}].diffuse", currentWorld.SpotLights[i].LightColor);
                 Material.SetUniform($"spotLights[{i}].specular", currentWorld.SpotLights[i].LightColor);
                 
@@ -100,7 +100,7 @@ namespace Light_And_Shadow.Components
         private void SetSun(World currentWorld)
         {
             Material.SetUniform("dirLight.direction", currentWorld.DirectionalLight.Transform.Rotation);
-            Material.SetUniform("dirLight.ambient", currentWorld.GetSkyColor(0.5f));
+            Material.SetUniform("dirLight.ambient", currentWorld.GetSkyColor() / 2);
             Material.SetUniform("dirLight.diffuse", currentWorld.DirectionalLight.LightColor);
             Material.SetUniform("dirLight.specular", currentWorld.DirectionalLight.LightColor);
         }

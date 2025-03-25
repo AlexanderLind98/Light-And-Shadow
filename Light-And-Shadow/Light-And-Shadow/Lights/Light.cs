@@ -20,15 +20,52 @@ public class Light
         LightColor = LightColor == DefaultColor ? Vector3.Zero : DefaultColor;
     }
     
-    protected Vector3 ForwardFromEuler(Vector3 eulerAngles)
+    protected Vector3 ConvertEulerToDirection(Vector3 rotation)
     {
-        float pitch = eulerAngles.X; // Rotation around X-axis (up/down)
-        float yaw = eulerAngles.Y;   // Rotation around Y-axis (left/right)
+        // Convert Euler angles to radians if necessary (assuming they are already in radians)
+        float pitch = rotation.X; // Pitch (rotation around X-axis)
+        float yaw = rotation.Y;   // Yaw (rotation around Y-axis)
 
-        return new Vector3(
-            MathHelper.RadiansToDegrees(yaw),
-            MathHelper.RadiansToDegrees(pitch),
-            0
-        );
+        // Calculate the direction based on the Euler angles (pitch, yaw)
+        float x = MathF.Cos(pitch) * MathF.Cos(yaw);
+        float y = MathF.Sin(pitch);
+        float z = MathF.Cos(pitch) * MathF.Sin(yaw);
+
+        // Return the resulting direction vector, inverted to match the shader's inversion
+        return new Vector3(-x, -y, -z);  // Inverted to match the shader's calculation
     }
+    
+    protected Vector3 ConvertDirection(Vector3 direction)
+    {
+        // Normalize the direction to ensure it's a unit vector.
+        direction = Vector3.Normalize(direction);
+    
+        // Compute the pitch: angle from horizontal.
+        float pitch = (float)Math.Atan2(direction.Y, Math.Sqrt(direction.X * direction.X + direction.Z * direction.Z));
+    
+        // Compute the yaw. For a mesh whose forward vector is along Z,
+        // a yaw of atan2(direction.X, direction.Z) will yield π/2 for a light direction of (0.5, 0.5, 0).
+        float yaw = (float)Math.Atan2(direction.X, direction.Z);
+    
+        float roll = 0f;
+
+        // Return the Euler angles in radians.
+        return new Vector3(pitch, yaw, roll);
+    }
+
+    
+    /*protected Vector3 ConvertDirection(Vector3 direction)
+    {
+        // Normalize the direction to ensure it's a unit vector
+        direction = Vector3.Normalize(direction);
+        
+        float pitch = (float)Math.Atan2(direction.Y, Math.Sqrt(direction.X * direction.X + direction.Z * direction.Z));
+        
+        float yaw = (float)Math.Atan2(direction.X, direction.Z) + (float)Math.PI / 2;
+        
+        float roll = 0f;
+
+        // Return the Euler angles in radians
+        return new Vector3(pitch, yaw, roll);
+    }*/
 }
