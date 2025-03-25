@@ -88,7 +88,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     
     // specular shading
     vec3 reflectDir = reflect(-lightDir, normal);
-    const float energyConservation = (8.0 + material.shininess) / (8.0 * pi);
+    const float energyConservation = (50.0 + material.shininess) / (50.0 * pi);
     float spec = energyConservation * pow(max(dot(normal, halfwayDir), 0.0f), material.shininess);
     
     // combine results
@@ -121,7 +121,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     
     // specular shading
     vec3 reflectDir = reflect(-lightDir, normal);
-    const float energyConservation = (8.0 + material.shininess) / (8.0 * pi);
+    const float energyConservation = (16.0 + material.shininess) / (16.0 * pi);
     float spec = energyConservation * pow(max(dot(normal, halfwayDir), 0.0f), material.shininess);
     
     // attenuation
@@ -164,7 +164,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float diff = max(dot(normal, lightDir), 0.0);
     // Specular
 //    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    const float energyConservation = (8.0 + material.shininess) / (8.0 * pi);
+    const float energyConservation = (16.0 + material.shininess) / (16.0 * pi);
     float spec = energyConservation * pow(max(dot(normal, halfwayDir), 0.0f), material.shininess);
     
     // Ambient

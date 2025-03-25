@@ -42,7 +42,7 @@ public class MultiLightTestWorld(Game game) : World(game)
             .Build());
         
         PointLights.Add(new PointLight(this));
-        PointLights.Add(new PointLight(this, Color4.Purple, 0.1f));
+        // PointLights.Add(new PointLight(this, Color4.Purple, 0.1f));
         
         SpotLights.Add(new SpotLight(this));
         SpotLights[0].ToggleLight();
