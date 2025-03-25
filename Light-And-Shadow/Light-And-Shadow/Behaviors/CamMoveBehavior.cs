@@ -78,9 +78,9 @@ public class CamMoveBehavior(GameObject gameObject, Game window) : Behaviour(gam
             gameObject.Transform.Position -= up * speed * (float)args.Time; //Down
         }
 
-        if (input.IsKeyPressed(Keys.F))
-        {
-            window.currentWorld.SpotLights[0].ToggleLight();
-        }
+        // if (input.IsKeyPressed(Keys.F))
+        // {
+        //     window.currentWorld.SpotLights[0].ToggleLight();
+        // }
     }
 }

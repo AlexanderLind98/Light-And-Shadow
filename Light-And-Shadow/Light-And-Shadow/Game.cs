@@ -72,8 +72,8 @@ namespace Light_And_Shadow
                 2 => new LightTestWorld(this),
                 3 => new PointLightWorld(this),
                 4 => new SpotLightWorld(this),
-                5 => new ShadowWorld(this),
-                6 => new PresenterWorld(this),
+                5 => new MultiLightTestWorld(this),
+                //6 => new PresenterWorld(this), //TODO: Implement presenter models
                 _ => new SimpleShapesWorld(this)
             };
 

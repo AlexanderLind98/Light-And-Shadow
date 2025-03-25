@@ -1,4 +1,5 @@
 using Light_And_Shadow.Behaviors;
+using Light_And_Shadow.Lights;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -39,9 +40,6 @@ public abstract class World
     protected virtual void ConstructWorld() { }
     
     public virtual void HandleInput(KeyboardState input) { }
-    protected virtual void ConstructWorld()
-    {
-    }
 
     public Vector3 GetSkyColor()
     {
