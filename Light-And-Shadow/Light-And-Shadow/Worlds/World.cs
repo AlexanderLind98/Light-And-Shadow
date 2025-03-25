@@ -13,7 +13,7 @@ public abstract class World
     protected readonly Game Game;
     
     public Vector3 SunDirection = new Vector3(-0.2f, -1.0f, -0.3f); //Set default sun direction;
-    public Vector3 SunColor = new Vector3(1f, 1f, 0.9f); //Set default sun direction;
+    public Vector3 SunColor = new Vector3(2f, 2f, 1.8f); //Set default sun direction;
     public Color4 SkyColor = Color4.CornflowerBlue;
 
     protected World(Game game)
@@ -31,7 +31,12 @@ public abstract class World
 
     public Vector3 GetSkyColor()
     {
-        return new Vector3(SkyColor.R, SkyColor.G, SkyColor.B) / 1.5f;
+        return new Vector3(SkyColor.R, SkyColor.G, SkyColor.B);
+    }
+    
+    public Vector3 GetSkyColor(float intensity)
+    {
+        return new Vector3(SkyColor.R + intensity, SkyColor.G + intensity, SkyColor.B + intensity);
     }
 
     public void LoadWorld()

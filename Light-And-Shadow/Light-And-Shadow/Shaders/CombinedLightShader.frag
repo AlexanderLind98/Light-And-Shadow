@@ -50,6 +50,7 @@ struct SpotLight
     float linear;
     float quadratic;
 };
+#define NR_SPOT_LIGHTS 2
 
 //Inputs
 in vec3 Normal;
@@ -64,7 +65,7 @@ uniform vec3 viewPos;
 uniform Material material;
 uniform DirLight dirLight;
 uniform PointLight pointLights[NR_POINT_LIGHTS];
-uniform SpotLight spotLight;
+uniform SpotLight spotLights[NR_SPOT_LIGHTS];
 
 //Prototypes / definitions
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
@@ -202,7 +203,10 @@ void main()
 //        result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
 //    }
 
-    result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
+    for(int i = 0; i < NR_SPOT_LIGHTS; i++)
+    {
+        result += CalcSpotLight(spotLights[i], norm, FragPos, viewDir);
+    }
     
     FragColor = vec4(result, 1.0f);
 }
