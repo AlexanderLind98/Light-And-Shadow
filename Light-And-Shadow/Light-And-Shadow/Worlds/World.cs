@@ -1,4 +1,5 @@
 using Light_And_Shadow.Behaviors;
+using Light_And_Shadow.Lights;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -15,11 +16,19 @@ public abstract class World
     public Vector3 SunDirection = new Vector3(-0.2f, -1.0f, -0.3f); //Set default sun direction;
     public Vector3 SunColor = new Vector3(2f, 2f, 1.8f); //Set default sun direction;
     public Color4 SkyColor = Color4.CornflowerBlue;
+    
+    public DirectionalLight DirectionalLight;
+    public List<PointLight> PointLights = new();
+    public List<SpotLight> SpotLights = new();
 
     protected World(Game game)
     {
         Game = game;
         SetupCamera();
+        
+        //Basic Sun
+        DirectionalLight = new DirectionalLight(this, Color4.LightYellow, 1);
+        DirectionalLight.Transform.Rotation = SunDirection;
     }
 
     /// <summary>

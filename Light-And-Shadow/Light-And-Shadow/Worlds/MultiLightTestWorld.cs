@@ -1,5 +1,7 @@
 using Light_And_Shadow.Behaviors;
+using Light_And_Shadow.Lights;
 using Light_And_Shadow.Materials;
+using OpenTK_OBJ;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
@@ -38,5 +40,13 @@ public class MultiLightTestWorld(Game game) : World(game)
             .Scale(4, 4, 4)
             .Position(0, -2, -10)
             .Build());
+        
+        PointLights.Add(new PointLight(this));
+        PointLights.Add(new PointLight(this, Color4.Purple, 0.1f));
+        
+        SpotLights.Add(new SpotLight(this));
+        SpotLights.Add(new SpotLight(this, Color4.Red, 
+            new Vector3(0,0,-9),
+            new Vector3(0f, 0.50f, 0f)));
     }
 }

@@ -17,7 +17,7 @@ namespace Light_And_Shadow
     {
         private int debugMode = 0;
         
-        private World currentWorld;
+        public World currentWorld;
 
         public Game(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)

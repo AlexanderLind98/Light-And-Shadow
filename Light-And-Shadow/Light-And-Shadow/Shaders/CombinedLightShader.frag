@@ -33,7 +33,6 @@ struct PointLight
     float linear;
     float quadratic;
 };
-#define NR_POINT_LIGHTS 4
 
 struct SpotLight
 {
@@ -50,7 +49,6 @@ struct SpotLight
     float linear;
     float quadratic;
 };
-#define NR_SPOT_LIGHTS 2
 
 //Inputs
 in vec3 Normal;
@@ -60,12 +58,18 @@ in vec2 texCoord;
 //Outputs
 out vec4 FragColor;
 
+//Defines
+#define MAX_POINTLIGHTS 16
+#define MAX_SPOTLIGHTS 16
+
 //Uniforms
 uniform vec3 viewPos;
 uniform Material material;
 uniform DirLight dirLight;
-uniform PointLight pointLights[NR_POINT_LIGHTS];
-uniform SpotLight spotLights[NR_SPOT_LIGHTS];
+uniform int numPointLights;
+uniform int numSpotLights;
+uniform PointLight pointLights[MAX_POINTLIGHTS];
+uniform SpotLight spotLights[MAX_SPOTLIGHTS];
 
 //Prototypes / definitions
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
@@ -198,14 +202,20 @@ void main()
     
     result = CalcDirLight(dirLight, norm, viewDir);
     
-//    for(int i = 0; i < NR_POINT_LIGHTS; i++)
-//    {
-//        result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
-//    }
-
-    for(int i = 0; i < NR_SPOT_LIGHTS; i++)
+    if(numPointLights != 0) //Only calc lights if lights exist!
     {
-        result += CalcSpotLight(spotLights[i], norm, FragPos, viewDir);
+         for (int i = 0; i < numPointLights; i++)
+         {
+             result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
+         }
+    }
+
+    if(numSpotLights != 0) //Only calc lights if lights exist!
+    {
+        for(int i = 0; i < numSpotLights; i++)
+        {
+            result += CalcSpotLight(spotLights[i], norm, FragPos, viewDir);
+        }
     }
     
     FragColor = vec4(result, 1.0f);
