@@ -9,10 +9,10 @@ namespace Light_And_Shadow.Worlds;
 
 public abstract class World
 {
-    protected readonly List<GameObject> GameObjects = [];
+    public readonly List<GameObject> GameObjects = [];
+    public readonly Game Game;
     private Camera camera;
-    protected readonly Game Game;
-    
+
     public Vector3 SunDirection = new Vector3(-0.2f, -1.0f, -0.3f); //Set default sun direction;
     public Vector3 SunColor = new Vector3(2f, 2f, 1.8f); //Set default sun direction;
     public Color4 SkyColor = Color4.CornflowerBlue;
@@ -29,6 +29,7 @@ public abstract class World
         //Basic Sun
         DirectionalLight = new DirectionalLight(this, Color4.LightYellow, 1);
         DirectionalLight.Transform.Rotation = SunDirection;
+        DirectionalLight.UpdateVisualizer(this);
     }
 
     /// <summary>
