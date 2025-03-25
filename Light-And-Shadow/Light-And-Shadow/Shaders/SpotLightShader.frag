@@ -78,16 +78,10 @@ void main()
     result = specular;
     else
     result = (ambient + diffuse + specular);
-
-
-//    FragColor = vec4(light.position, 1.0);
-
-/**    // Smooth spotlight effect
-    float epsilon = 0.1;  // Soft transition range
-    float intensity = smoothstep(light.cutOff - epsilon, light.cutOff, theta);*/
+    
 
     // Apply intensity to lighting result
-    vec3 finalColor = (ambient + diffuse + specular) * intensity + ambient;
+    vec3 finalColor = result * intensity + ambient;
     FragColor = vec4(finalColor, 1.0);
 
 }
