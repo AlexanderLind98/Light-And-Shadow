@@ -9,6 +9,9 @@ namespace Light_And_Shadow.Worlds;
 
 public abstract class World
 {
+    public virtual string DebugLabel => "Combined";
+    public string WorldName { get; set; }
+
     protected readonly List<GameObject> GameObjects = [];
     private Camera camera;
     protected readonly Game Game;
@@ -34,9 +37,9 @@ public abstract class World
     /// <summary>
     /// Method used for constructing initial world
     /// </summary>
-    protected virtual void ConstructWorld()
-    {
-    }
+    protected virtual void ConstructWorld() { }
+    
+    public virtual void HandleInput(KeyboardState input) { }
 
     public Vector3 GetSkyColor()
     {
@@ -80,11 +83,23 @@ public abstract class World
     {
         foreach (var obj in GameObjects)
         {
-            if (obj.Renderer?.Mesh is IDisposable disposableMesh)
+            if (obj.Renderer != null)
             {
-                disposableMesh.Dispose();
+                obj.Renderer.Mesh?.Dispose();
+
+                if (obj.Renderer.Material is IDisposable disposableMat)
+                {
+                    disposableMat.Dispose();
+                }
             }
         }
+
+        foreach (var obj in GameObjects)
+        {
+            obj.Dispose();
+        }
+
+        GameObjects.Clear();
     }
     
     /// <summary>

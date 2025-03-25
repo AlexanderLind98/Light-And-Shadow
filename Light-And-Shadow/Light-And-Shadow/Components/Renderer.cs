@@ -1,4 +1,5 @@
-﻿using Light_And_Shadow.Worlds;
+﻿using Light_And_Shadow.Materials;
+using Light_And_Shadow.Worlds;
 using OpenTK_OBJ;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
@@ -7,7 +8,20 @@ namespace Light_And_Shadow.Components
 {
     public class Renderer
     {
-        public Material Material { get; set; }
+        private Material _material;
+        public Material Material
+        {
+            get => _material;
+            set
+            {
+                if (_material != null && _material != value)
+                {
+                    (_material as IDisposable)?.Dispose();
+                }
+                _material = value;
+            }
+        }
+
         public Mesh Mesh { get; set; }
         
         public Renderer(Material material, Mesh mesh)
@@ -19,6 +33,7 @@ namespace Light_And_Shadow.Components
         public void Draw(Matrix4 mvp, Matrix4 model, Camera camera, int currentDebugMode, World currentWorld)
         {
             Material.UseShader();
+            Material.UpdateUniforms();
             Material.SetUniform("mvp", mvp);
             Material.SetUniform("model", model);
             
