@@ -8,7 +8,20 @@ namespace Light_And_Shadow.Components
 {
     public class Renderer
     {
-        public Material Material { get; set; }
+        private Material _material;
+        public Material Material
+        {
+            get => _material;
+            set
+            {
+                if (_material != null && _material != value)
+                {
+                    (_material as IDisposable)?.Dispose();
+                }
+                _material = value;
+            }
+        }
+
         public Mesh Mesh { get; set; }
         
         public Renderer(Material material, Mesh mesh)

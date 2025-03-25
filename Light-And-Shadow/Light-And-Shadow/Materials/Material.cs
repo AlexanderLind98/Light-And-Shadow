@@ -6,7 +6,7 @@ namespace Light_And_Shadow.Materials
     /// <summary>
     /// Represents a material with a shader and uniforms.
     /// </summary>
-    public class Material
+    public class Material : IDisposable
     {
         protected Shader shader;
         protected Dictionary<string, object> uniforms = new Dictionary<string, object>();
@@ -95,7 +95,6 @@ namespace Light_And_Shadow.Materials
             }
             shader.Use();
         }
-        
         public void Dispose()
         {
             shader?.Dispose();

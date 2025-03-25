@@ -25,6 +25,5 @@ public class SpotLightWorld : World
             .Position(0, -2, -5)
             .Build());
 
-        // Sæt shader uniforms til at aktivere spotlight med korrekt direction og cutoff.
     }
 }

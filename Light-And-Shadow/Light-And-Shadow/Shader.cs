@@ -8,9 +8,12 @@ namespace Light_And_Shadow;
 public class Shader : IDisposable
 {
     public int Handle;
+    private readonly string name;
     
     public Shader(string vertexPath, string fragmentPath)
     {
+        name = Path.GetFileNameWithoutExtension(vertexPath) + "+" + Path.GetFileNameWithoutExtension(fragmentPath);
+        
         // The first step in creating a shader is to load the source code from a file.
         string vertexSource = File.ReadAllText(vertexPath);
         
@@ -96,7 +99,7 @@ public class Shader : IDisposable
     {
         if (disposedValue == false)
         {
-            Console.WriteLine("GPU Resource leak! Did you forget to call Dispose()?");
+            Console.WriteLine($"GPU Resource leak in shader: {name} — Did you forget to call Dispose()?");
         }
     }
 

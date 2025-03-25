@@ -18,7 +18,5 @@ public class PointLightWorld : World
             .Position(0, 0, 0)
             .Behavior<RotateObjectBehavior>(Vector3.UnitY, 10f)
             .Build());
-
-        // Her ville du sætte shaderens uniforms til at benytte et pointlight (position i verden osv.)
     }
 }

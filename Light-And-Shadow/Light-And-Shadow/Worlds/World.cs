@@ -72,6 +72,11 @@ public abstract class World
             }
         }
 
+        foreach (var obj in GameObjects)
+        {
+            obj.Dispose();
+        }
+
         GameObjects.Clear();
     }
     
