@@ -1,4 +1,5 @@
-﻿using Light_And_Shadow.Worlds;
+﻿using Light_And_Shadow.Materials;
+using Light_And_Shadow.Worlds;
 using OpenTK_OBJ;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
@@ -19,6 +20,7 @@ namespace Light_And_Shadow.Components
         public void Draw(Matrix4 mvp, Matrix4 model, Camera camera, int currentDebugMode, World currentWorld)
         {
             Material.UseShader();
+            Material.UpdateUniforms();
             Material.SetUniform("mvp", mvp);
             Material.SetUniform("model", model);
             

@@ -51,15 +51,7 @@ void main()
     // Final color
     FragColor = vec4(result * objectColor, 1.0);
 
-    
-    // Tester specular
-//    vec3 specular = spec * lightColor;
-//    FragColor = vec4(specular, 1.0);
-//    float rawDot = dot(viewDir, reflectDir);
-//    FragColor = vec4(vec3(rawDot), 1.0);
 
-
-    // tester normalen
-    //FragColor = vec4(normalize(Normal) * 0.5 + 0.5, 1.0);
     //FragColor = vec4(norm * 0.5 + 0.5, 1.0);
+
 }
