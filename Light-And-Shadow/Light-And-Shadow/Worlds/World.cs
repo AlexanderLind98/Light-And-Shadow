@@ -11,7 +11,10 @@ public abstract class World
     protected readonly List<GameObject> GameObjects = [];
     private Camera camera;
     protected readonly Game Game;
+    
     public Vector3 SunDirection = new Vector3(-0.2f, -1.0f, -0.3f); //Set default sun direction;
+    public Vector3 SunColor = new Vector3(1f, 1f, 0.9f); //Set default sun direction;
+    public Color4 SkyColor = Color4.CornflowerBlue;
 
     protected World(Game game)
     {
@@ -24,13 +27,18 @@ public abstract class World
     /// </summary>
     protected virtual void ConstructWorld()
     {
-        
+    }
+
+    public Vector3 GetSkyColor()
+    {
+        return new Vector3(SkyColor.R, SkyColor.G, SkyColor.B) / 1.5f;
     }
 
     public void LoadWorld()
     {
         GL.Enable(EnableCap.DepthTest);
         ConstructWorld();
+        GL.ClearColor(SkyColor);
     }
 
     public void UpdateWorld(FrameEventArgs args)

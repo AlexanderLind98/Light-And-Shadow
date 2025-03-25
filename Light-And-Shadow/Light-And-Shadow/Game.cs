@@ -26,7 +26,7 @@ namespace Light_And_Shadow
             GL.ClearColor(Color4.CornflowerBlue);
             
             //currentWorld = new TestWorld(this);
-            currentWorld = new LightTestWorld(this);
+            currentWorld = new MultiLightTestWorld(this);
         }
         
         protected override void OnLoad()
