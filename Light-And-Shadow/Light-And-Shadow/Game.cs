@@ -17,7 +17,7 @@ namespace Light_And_Shadow
     {
         private int debugMode = 0;
         
-        private World currentWorld;
+        public World currentWorld;
 
         public Game(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -26,7 +26,7 @@ namespace Light_And_Shadow
             GL.ClearColor(Color4.CornflowerBlue);
             
             //currentWorld = new TestWorld(this);
-            currentWorld = new LightTestWorld(this);
+            currentWorld = new MultiLightTestWorld(this);
         }
         
         protected override void OnLoad()

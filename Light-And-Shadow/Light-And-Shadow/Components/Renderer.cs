@@ -26,21 +26,83 @@ namespace Light_And_Shadow.Components
 
             Material.SetUniform("normalMatrix", normalMatrix); // Correct normal matrix passed to the shader
 
-            // Set the transformed light direction
-            Material.SetUniform("light.position", camera.Position);
-            Material.SetUniform("light.direction", Vector3.Normalize(camera.Front));
+            SetSun(currentWorld);
+            SpotLights(camera, currentWorld);
+            PointLights(currentWorld);
 
-            Material.SetUniform("light.cutOff", (float)MathHelper.Cos(MathHelper.DegreesToRadians(12.5f))); //12,5° radius
-            Material.SetUniform("light.outerCutOff", (float)MathHelper.Cos(MathHelper.DegreesToRadians(30.5f))); //12,5° radius
             Material.SetUniform("viewPos", (Vector3)camera.Position);
-            
-            Material.SetUniform("light.constant", 1.0f);
-            Material.SetUniform("light.linear", 0.09f);
-            Material.SetUniform("light.quadratic", 0.032f);
-
             Material.SetUniform("debugMode", currentDebugMode);
             
             Mesh.Draw();
+        }
+
+        private void PointLights(World currentWorld)
+        {
+            int numPointLights = currentWorld.PointLights.Count;
+            
+            Material.SetUniform("numPointLights", numPointLights);
+            
+            for (int i = 0; i < numPointLights; i++)
+            {
+                //Position
+                Material.SetUniform($"pointLights[{i}].position", currentWorld.PointLights[i].Transform.Position);
+                
+                //Colors
+                Material.SetUniform($"pointLights[{i}].ambient", currentWorld.GetSkyColor() / 255.0f);
+                Material.SetUniform($"pointLights[{i}].diffuse", currentWorld.PointLights[i].LightColor);
+                Material.SetUniform($"pointLights[{i}].specular", currentWorld.PointLights[i].LightColor);
+                
+                //Fall-off
+                Material.SetUniform($"pointLights[{i}].constant", currentWorld.PointLights[i].Constant);
+                Material.SetUniform($"pointLights[{i}].linear", currentWorld.PointLights[i].Linear);
+                Material.SetUniform($"pointLights[{i}].quadratic", currentWorld.PointLights[i].Quadratic);
+            }
+        }
+
+        private void SpotLights(Camera camera, World currentWorld)
+        {
+            int numSpotLights = currentWorld.SpotLights.Count;
+            Material.SetUniform("numSpotLights", numSpotLights);
+            
+            for (int i = 0; i < numSpotLights; i++)
+            {
+                //Position & rotation
+                if (i == 0) // spotlight 0 is ALWAYS player flashlight!!
+                {
+                    Material.SetUniform($"spotLights[{i}].position", camera.Position);
+                    Material.SetUniform($"spotLights[{i}].direction", Vector3.Normalize(camera.Front));
+                }
+                else //All other spotlights
+                {
+                    Material.SetUniform($"spotLights[{i}].position", currentWorld.SpotLights[i].Transform.Position);
+                    Material.SetUniform($"spotLights[{i}].direction", currentWorld.SpotLights[i].Transform.Rotation);
+                }
+
+                //Cone radius
+                Material.SetUniform($"spotLights[{i}].cutOff", (float)MathHelper.Cos(MathHelper.DegreesToRadians(
+                    currentWorld.SpotLights[i].InnerRadius)));
+                
+                Material.SetUniform($"spotLights[{i}].outerCutOff", (float)MathHelper.Cos(MathHelper.DegreesToRadians(
+                    currentWorld.SpotLights[i].OuterRadius)));
+                
+                //Color
+                Material.SetUniform($"spotLights[{i}].ambient", currentWorld.GetSkyColor() / 255f);
+                Material.SetUniform($"spotLights[{i}].diffuse", currentWorld.SpotLights[i].LightColor);
+                Material.SetUniform($"spotLights[{i}].specular", currentWorld.SpotLights[i].LightColor);
+                
+                //Fall-off
+                Material.SetUniform($"spotLights[{i}].constant", currentWorld.SpotLights[i].Constant);
+                Material.SetUniform($"spotLights[{i}].linear", currentWorld.SpotLights[i].Linear);
+                Material.SetUniform($"spotLights[{i}].quadratic", currentWorld.SpotLights[i].Quadratic);
+            }
+        }
+
+        private void SetSun(World currentWorld)
+        {
+            Material.SetUniform("dirLight.direction", currentWorld.DirectionalLight.Transform.Rotation);
+            Material.SetUniform("dirLight.ambient", currentWorld.GetSkyColor(0.5f));
+            Material.SetUniform("dirLight.diffuse", currentWorld.DirectionalLight.LightColor);
+            Material.SetUniform("dirLight.specular", currentWorld.DirectionalLight.LightColor);
         }
     }
 }
