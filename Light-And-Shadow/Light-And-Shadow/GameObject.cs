@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Light_And_Shadow.Behaviors;
 using Light_And_Shadow.Components;
+using Light_And_Shadow.Worlds;
 using OpenTK_OBJ;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -66,7 +67,7 @@ namespace Light_And_Shadow
             }
         }
 
-        public void Draw(Matrix4 viewProjection, Vector3 cameraPosition, int debugMode = 0)
+        public void Draw(Matrix4 viewProjection, Camera camera, World currentWorld, int debugMode = 0)
         {
             if (Renderer != null)
             {
@@ -77,7 +78,7 @@ namespace Light_And_Shadow
                 Matrix4 mvp = model * viewProjection;
                 
                 // Draw the object.
-                Renderer.Draw(mvp, model, cameraPosition, debugMode);
+                Renderer.Draw(mvp, model, camera, debugMode, currentWorld);
             }
         }
     }

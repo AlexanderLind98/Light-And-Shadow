@@ -44,7 +44,7 @@ namespace OpenTK_OBJ
 
         public Material()
         {
-            shader = new Shader("Shaders/materialLightShader.vert", "Shaders/materialLightShader.frag");
+            shader = new Shader("Shaders/SpotLightShader.vert", "Shaders/SpotLightShader.frag");
         }
 
         /// <summary>
