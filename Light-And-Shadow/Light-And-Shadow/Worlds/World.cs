@@ -24,6 +24,9 @@ public abstract class World
     public DirectionalLight DirectionalLight;
     public List<PointLight> PointLights = new();
     public List<SpotLight> SpotLights = new();
+    
+    public Matrix4 ShadowMatrix { get; set; }
+
 
     protected World(Game game)
     {

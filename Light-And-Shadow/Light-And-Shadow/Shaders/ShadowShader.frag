@@ -232,30 +232,32 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 
 void main()
 {
-    // Normalize input
     vec3 norm = normalize(fs_in.Normal);
     vec3 viewDir = normalize(viewPos - fs_in.FragPos);
-    
-    vec3 result;
-    
-    result = CalcDirLight(dirLight, norm, viewDir);
-    
-    if(numPointLights != 0) //Only calc lights if lights exist!
+
+//    // === SHADOW DEBUG START ===
+//    float shadowDebug = ShadowCalculation(fs_in.FragPosLightSpace);
+//    FragColor = vec4(vec3(1.0 - shadowDebug), 1.0); // White = light, Black = shadow
+//    return;
+//    // === SHADOW DEBUG END ===
+
+    vec3 result = CalcDirLight(dirLight, norm, viewDir);
+
+    if (numPointLights != 0)
     {
-         for (int i = 0; i < numPointLights; i++)
-         {
-             result += CalcPointLight(pointLights[i], norm, fs_in.FragPos, viewDir);
-         }
+        for (int i = 0; i < numPointLights; i++)
+        {
+            result += CalcPointLight(pointLights[i], norm, fs_in.FragPos, viewDir);
+        }
     }
 
-    if(numSpotLights != 0) //Only calc lights if lights exist!
+    if (numSpotLights != 0)
     {
-        for(int i = 0; i < numSpotLights; i++)
+        for (int i = 0; i < numSpotLights; i++)
         {
             result += CalcSpotLight(spotLights[i], norm, fs_in.FragPos, viewDir);
         }
     }
-    
+
     FragColor = vec4(result, 1.0f);
-//    FragColor = texture(shadowMap, fs_in.TexCoords);
 }

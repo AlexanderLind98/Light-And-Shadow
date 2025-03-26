@@ -101,8 +101,11 @@ namespace Light_And_Shadow
             GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             shadowFramebuffer.ConfigureShaderAndMatricies();
-            GL.BindTexture(TextureTarget.Texture2D, shadowFramebuffer.depthMap);
             
+            GL.ActiveTexture(TextureUnit.Texture1);
+            GL.BindTexture(TextureTarget.Texture2D, shadowFramebuffer.depthMap);
+            currentWorld.ShadowMatrix = shadowFramebuffer.lightSpaceMatrix;
+
             shadowFramebuffer.Dispose();
             
             //Render scene as normal
