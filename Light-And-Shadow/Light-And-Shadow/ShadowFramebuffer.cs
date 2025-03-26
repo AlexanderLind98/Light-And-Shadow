@@ -1,4 +1,6 @@
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Desktop;
 
 namespace Light_And_Shadow;
 
@@ -8,7 +10,7 @@ public class ShadowFramebuffer
     private int depthMapFBO;
     private int depthMap;
 
-    public ShadowFramebuffer()
+    public ShadowFramebuffer(GameWindow window)
     {
         // 1. Create FBO frame Buffer object
         depthMapFBO = GL.GenFramebuffer();
@@ -16,7 +18,7 @@ public class ShadowFramebuffer
         // 2. Create a 2D texture as the frame buffer's depth buffer
         int depthMap = GL.GenTexture();
         GL.BindTexture(TextureTarget.Texture2D, depthMap);
-
+        
         // Texture parameters
         GL.TexImage2D(TextureTarget.Texture2D, 
             level: 0, 
@@ -42,8 +44,39 @@ public class ShadowFramebuffer
         GL.DrawBuffer(DrawBufferMode.None);
         GL.ReadBuffer(ReadBufferMode.None);
         GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-
+        
+        GL.Viewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, depthMapFBO);
+        GL.Clear(ClearBufferMask.DepthBufferBit);
+        ConfigureShaderAndMatricies();
+        
+        //Render scene
+        
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+        
+        //2
+        
+        GL.Viewport(0, 0, window.ClientSize.X, window.ClientSize.Y);
+        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+        ConfigureShaderAndMatricies();
+        GL.BindTexture(TextureTarget.Texture2D, depthMap);
+        
+        //Render scene
     }
 
-
+    private void ConfigureShaderAndMatricies()
+    {
+        float near_plane = 1.0f;
+        float far_plane = 7.5f;
+        Shader simpleDepthShader = new Shader("shapers/DepthShader.vert", "shapers/DepthShader.frag");
+        
+        Matrix4 lightProjection = Matrix4.CreateOrthographic(-10, 10, near_plane, far_plane);
+        Matrix4 lightView = Matrix4.LookAt(new Vector3(-2.0f, 4.0f, -1.0f), Vector3.Zero, Vector3.UnitY);
+        Matrix4 lightSpaceMatrix = lightProjection * lightView;
+        
+        
+        simpleDepthShader.Use();
+        GL.UniformMatrix4(1, false, ref lightSpaceMatrix);
+        // GL.UniformMatrix4(1, true, ref lightSpaceMatrix); - use in case of emergency
+    }
 }

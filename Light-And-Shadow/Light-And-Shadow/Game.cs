@@ -22,7 +22,7 @@ namespace Light_And_Shadow
             GL.ClearColor(Color4.Black);
             
             //currentWorld = new TestWorld(this);
-            currentWorld = new LightTestWorld(this);
+            currentWorld = new ShadowWorld(this);
         }
         
         protected override void OnLoad()

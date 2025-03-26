@@ -14,7 +14,7 @@ public class DirectionalLight : Light
         Transform = new Transform();
         currentWorld.DirectionalLight = this;
         
-        CreateVisualizer(currentWorld);
+        // CreateVisualizer(currentWorld);
     }
 
     public DirectionalLight(World currentWorld, Color4 color, float intensity = 1)
@@ -26,7 +26,7 @@ public class DirectionalLight : Light
         LightColor = new Vector3(color.R * LightIntensity, color.G* LightIntensity, color.B* LightIntensity);
         DefaultColor = LightColor;
         
-        CreateVisualizer(currentWorld);
+        // CreateVisualizer(currentWorld);
     }
 
     private void CreateVisualizer(World currentWorld)
