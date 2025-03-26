@@ -40,13 +40,7 @@ public class MultiLightTestWorld(Game game) : World(game)
             .Scale(4, 4, 4)
             .Position(0, -2, -10)
             .Build());
-        
-        /*GameObjects.Add(new GameObjectBuilder(Game)
-            .Model("Arrow")
-            .Material(new mat_gold())
-            .Scale(1, 1, 1)
-            .Position(0, -2, -10)
-            .Build());*/
+
         
         PointLights.Add(new PointLight(this));
         // PointLights.Add(new PointLight(this, Color4.Purple, 0.1f));
@@ -54,8 +48,6 @@ public class MultiLightTestWorld(Game game) : World(game)
         SpotLights.Add(new SpotLight(this));
         SpotLights[0].ToggleLight();
         
-        SpotLights.Add(new SpotLight(this, Color4.Red, 
-            new Vector3(0,0,-9),
-            new Vector3(1.0f, 1.0f, 0.0f)));
+        SpotLights.Add(new SpotLight(this, Color4.Red, new Vector3(0, 0, -9), new Vector3(1.0f, 1.0f, 0.0f)));
     }
 }
