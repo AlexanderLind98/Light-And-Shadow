@@ -11,6 +11,10 @@ public abstract class World
 {
     public readonly List<GameObject> GameObjects = [];
     public readonly Game Game;
+
+    public virtual string DebugLabel => "Combined";
+    public string WorldName { get; set; }
+
     private Camera camera;
 
     public Vector3 SunDirection = new Vector3(-0.2f, -1.0f, -0.3f); //Set default sun direction;
@@ -35,9 +39,9 @@ public abstract class World
     /// <summary>
     /// Method used for constructing initial world
     /// </summary>
-    protected virtual void ConstructWorld()
-    {
-    }
+    protected virtual void ConstructWorld() { }
+    
+    public virtual void HandleInput(KeyboardState input) { }
 
     public Vector3 GetSkyColor()
     {
@@ -81,11 +85,23 @@ public abstract class World
     {
         foreach (var obj in GameObjects)
         {
-            if (obj.Renderer?.Mesh is IDisposable disposableMesh)
+            if (obj.Renderer != null)
             {
-                disposableMesh.Dispose();
+                obj.Renderer.Mesh?.Dispose();
+
+                if (obj.Renderer.Material is IDisposable disposableMat)
+                {
+                    disposableMat.Dispose();
+                }
             }
         }
+
+        foreach (var obj in GameObjects)
+        {
+            obj.Dispose();
+        }
+
+        GameObjects.Clear();
     }
     
     /// <summary>

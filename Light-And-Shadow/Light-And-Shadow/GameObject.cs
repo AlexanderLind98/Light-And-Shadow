@@ -81,5 +81,12 @@ namespace Light_And_Shadow
                 Renderer.Draw(mvp, model, camera, debugMode, currentWorld);
             }
         }
+        
+        public void Dispose()
+        {
+            Renderer?.Mesh?.Dispose();
+            if (Renderer?.Material is IDisposable dMat)
+                dMat.Dispose();
+        }
     }
 }

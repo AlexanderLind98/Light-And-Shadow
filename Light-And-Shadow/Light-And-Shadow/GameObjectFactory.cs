@@ -1,5 +1,6 @@
 using Light_And_Shadow.Behaviors;
 using Light_And_Shadow.Components;
+using Light_And_Shadow.Materials;
 using Light_And_Shadow.Shapes;
 using OpenTK_OBJ;
 using OpenTK.Mathematics;

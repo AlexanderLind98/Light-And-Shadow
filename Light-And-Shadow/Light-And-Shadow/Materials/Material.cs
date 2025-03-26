@@ -1,21 +1,18 @@
-﻿using OpenTK.Mathematics;
-using OpenTK.Graphics.OpenGL4;
-using System;
-using System.Collections.Generic;
-using Light_And_Shadow;
+﻿using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 
-namespace OpenTK_OBJ
+namespace Light_And_Shadow.Materials
 {
     /// <summary>
     /// Represents a material with a shader and uniforms.
     /// </summary>
-    public class Material
+    public class Material : IDisposable
     {
         protected Shader shader;
         protected Dictionary<string, object> uniforms = new Dictionary<string, object>();
         private Dictionary<int, Texture> textures = new Dictionary<int, Texture>();
 
-        protected void UpdateUniforms()
+        public void UpdateUniforms()
         {
             foreach (KeyValuePair<string,object> uniform in uniforms)
             {
@@ -97,6 +94,10 @@ namespace OpenTK_OBJ
                 kv.Value.Use(TextureUnit.Texture0 + kv.Key);
             }
             shader.Use();
+        }
+        public void Dispose()
+        {
+            shader?.Dispose();
         }
     }
 }
