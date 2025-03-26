@@ -119,6 +119,9 @@
       <None Update="Shaders\materialLightShader.frag">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Models\GroundFloor.obj">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

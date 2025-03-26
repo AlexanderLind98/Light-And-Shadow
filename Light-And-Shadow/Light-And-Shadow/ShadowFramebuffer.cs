@@ -53,7 +53,7 @@ public class ShadowFramebuffer
 
         Matrix4 lightProjection = Matrix4.CreateOrthographic(-10, 10, near_plane, far_plane);
         // Matrix4 lightView = Matrix4.LookAt(new Vector3(-2.0f, 4.0f, -1.0f), Vector3.Zero, Vector3.UnitY);
-        Matrix4 lightView = Matrix4.LookAt(new Vector3(-2.0f, 4.0f, -1.0f), Vector3.Zero, Vector3.UnitY);
+        Matrix4 lightView = Matrix4.LookAt(new Vector3(-0.2f, -1.0f, -0.3f), Vector3.Zero, Vector3.UnitY);
         lightSpaceMatrix = lightProjection * lightView;
     }
 

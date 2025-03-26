@@ -131,8 +131,8 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     result = specular;
     else
 //    result = (ambient + diffuse + specular);
-//    result = vec3(lighting);
-    result = vec3(1.0 - shadow);
+    result = vec3(lighting);
+//    result = vec3(1.0 - shadow);
     
     return result;    
 }
@@ -257,4 +257,5 @@ void main()
     }
     
     FragColor = vec4(result, 1.0f);
+//    FragColor = texture(shadowMap, fs_in.TexCoords);
 }
