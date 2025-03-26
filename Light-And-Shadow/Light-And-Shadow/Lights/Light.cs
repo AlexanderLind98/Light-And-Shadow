@@ -1,7 +1,6 @@
-using System.Drawing;
 using OpenTK.Mathematics;
 
-namespace Light_And_Shadow;
+namespace Light_And_Shadow.Lights;
 
 public class Light
 {

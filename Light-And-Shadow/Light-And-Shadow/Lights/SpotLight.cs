@@ -75,15 +75,9 @@ public class SpotLight : Light
 
         currentWorld.GameObjects.Add(Visualizer);
 
-        // Convert the Euler angles into a direction vector (invert to match shader)
-        // Vector3 direction = ConvertEulerToDirection(Transform.Rotation);
-
         // Apply the direction to the visualizer arrow (convert direction to Euler angles)
         Visualizer.Transform.Position = Transform.Position;
-        Visualizer.Transform.Rotation = ConvertDirection(Transform.Rotation);
-
-        Console.WriteLine($"Spotlight Rotation (Radians): {Transform.Rotation}");
-        Console.WriteLine($"Visualizer Rotation (Radians): {Visualizer.Transform.Rotation}");
+        Visualizer.Transform.Rotation = new Vector3(Transform.Rotation.X, Transform.Rotation.Y - (float)Math.PI / 2, Transform.Rotation.Z);
     }
     
     public void UpdateVisualizer(World currentWorld)

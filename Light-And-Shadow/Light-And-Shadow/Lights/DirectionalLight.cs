@@ -3,7 +3,7 @@ using Light_And_Shadow.Worlds;
 using OpenTK_OBJ;
 using OpenTK.Mathematics;
 
-namespace Light_And_Shadow;
+namespace Light_And_Shadow.Lights;
 
 public class DirectionalLight : Light
 {
