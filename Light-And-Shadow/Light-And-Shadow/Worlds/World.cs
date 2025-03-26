@@ -81,6 +81,20 @@ public abstract class World
         }
     }
 
+    public void RenderShadowMap(Matrix4 lightSpaceMatrix, Shader depthShader)
+    {
+        foreach (var obj in GameObjects)
+        {
+            Matrix4 model = obj.Transform.CalculateModel();
+            Matrix4 mvp = model * lightSpaceMatrix;
+            
+            depthShader.SetMatrix("model", model);
+            depthShader.SetMatrix("mvp", mvp);
+            
+            obj.Draw(lightSpaceMatrix, camera, this);
+        }
+    }
+
     public void UnloadWorld()
     {
         foreach (var obj in GameObjects)

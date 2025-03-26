@@ -83,7 +83,27 @@ namespace Light_And_Shadow
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             base.OnRenderFrame(args);
+
+            ShadowFramebuffer shadowFramebuffer = new ShadowFramebuffer();
             
+            // Render to depth map
+            GL.Viewport(0, 0, shadowFramebuffer.SHADOW_WIDTH, shadowFramebuffer.SHADOW_HEIGHT);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, shadowFramebuffer.depthMapFBO);
+            GL.Clear(ClearBufferMask.DepthBufferBit);
+            shadowFramebuffer.ConfigureShaderAndMatricies();
+        
+            //Render depth map from scene
+            currentWorld.RenderShadowMap(shadowFramebuffer.lightSpaceMatrix, shadowFramebuffer.simpleDepthShader);
+        
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+        
+            // Render scene as normal using the shadow map
+            GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            shadowFramebuffer.ConfigureShaderAndMatricies();
+            GL.BindTexture(TextureTarget.Texture2D, shadowFramebuffer.depthMap);
+            
+            //Render scene as normal
             currentWorld.DrawWorld(args, DebugMode);
             
             SwapBuffers();

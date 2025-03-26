@@ -26,8 +26,6 @@ public class ShadowWorld : World
             .Model("SmoothCube")
             .Material(new mat_default())
             .Position(1.5f, 0f, 0f)
-            //.Behavior<RotateObjectBehavior>(Vector3.UnitY, 20f)
-            //.Behavior<RotateObjectBehavior>(Vector3.UnitZ, 20f)// weird specular light
             .Build();
 
         GameObjects.Add(staticCube);
