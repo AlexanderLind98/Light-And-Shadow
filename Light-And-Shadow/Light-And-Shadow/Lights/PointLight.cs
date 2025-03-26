@@ -1,3 +1,4 @@
+using Light_And_Shadow.Materials;
 using Light_And_Shadow.Worlds;
 using OpenTK_OBJ;
 using OpenTK.Mathematics;
@@ -12,6 +13,15 @@ public class PointLight : Light
     {
         Transform = new Transform();
         currentWorld.PointLights.Add(this);
+        
+        Visualizer = new GameObjectBuilder(currentWorld.Game)
+            .Model("Sphere")
+            .Material(new mat_concrete())
+            .Position(Transform.Position.X, Transform.Position.Y, Transform.Position.Z)
+            .Scale(0.1f, 0.1f, 0.1f)
+            .Build();
+
+        currentWorld.GameObjects.Add(Visualizer);
     }
     
     public PointLight(World currentWorld, Color4 color, float intensity = 1)
@@ -22,5 +32,14 @@ public class PointLight : Light
         LightIntensity = intensity;
         LightColor = new Vector3(color.R * LightIntensity, color.G* LightIntensity, color.B* LightIntensity);
         DefaultColor = LightColor;
+        
+        Visualizer = new GameObjectBuilder(currentWorld.Game)
+            .Model("Sphere")
+            .Material(new mat_concrete())
+            .Position(Transform.Position.X, Transform.Position.Y, Transform.Position.Z)
+            .Scale(0.1f, 0.1f, 0.1f)
+            .Build();
+
+        currentWorld.GameObjects.Add(Visualizer);
     }
 }

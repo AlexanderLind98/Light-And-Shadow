@@ -50,6 +50,7 @@ public class CamMoveBehavior(GameObject gameObject, Game window) : Behaviour(gam
         }
         
         cameraComponent.Front = front;
+        Console.WriteLine(front.ToString());
         cameraComponent.Up = up;
         
         if (input.IsKeyDown(Keys.W))
