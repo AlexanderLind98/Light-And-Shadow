@@ -17,14 +17,14 @@ public class ShadowWorld : World
 
         staticCube = new GameObjectBuilder(Game)
             .Model("Room")
-            .Material(new mat_default())
-            .Position(0f, -2f, 0f)
-            .Scale(5, 5, 5)
+            .Material(new mat_gold())
+            .Position(0f, -1f, 0f)
+            .Scale(5, 1, 5)
             .Build();
 
         rotatingCube = new GameObjectBuilder(Game)
             .Model("SmoothCube")
-            .Material(new mat_concrete())
+            .Material(new mat_marble())
             .Position(1.5f, 0f, 0f)
             .Build();
 

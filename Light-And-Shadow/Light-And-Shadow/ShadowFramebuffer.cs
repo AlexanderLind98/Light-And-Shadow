@@ -46,19 +46,27 @@ public class ShadowFramebuffer
         GL.DrawBuffer(DrawBufferMode.None);
         GL.ReadBuffer(ReadBufferMode.None);
         GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+        
+        simpleDepthShader = new Shader("shaders/DepthShader.vert", "shaders/DepthShader.frag");
+        float near_plane = 1.0f;
+        float far_plane = 7.5f;
+
+        Matrix4 lightProjection = Matrix4.CreateOrthographic(-10, 10, near_plane, far_plane);
+        // Matrix4 lightView = Matrix4.LookAt(new Vector3(-2.0f, 4.0f, -1.0f), Vector3.Zero, Vector3.UnitY);
+        Matrix4 lightView = Matrix4.LookAt(new Vector3(-2.0f, 4.0f, -1.0f), Vector3.Zero, Vector3.UnitY);
+        lightSpaceMatrix = lightProjection * lightView;
     }
 
     public void ConfigureShaderAndMatricies()
     {
-        float near_plane = 1.0f;
-        float far_plane = 7.5f;
-        simpleDepthShader = new Shader("shaders/DepthShader.vert", "shaders/DepthShader.frag");
-        
-        Matrix4 lightProjection = Matrix4.CreateOrthographic(-10, 10, near_plane, far_plane);
-        Matrix4 lightView = Matrix4.LookAt(new Vector3(-2.0f, 4.0f, -1.0f), Vector3.Zero, Vector3.UnitY);
-        lightSpaceMatrix = lightProjection * lightView;
-        
         simpleDepthShader.Use();
         GL.UniformMatrix4(1, true, ref lightSpaceMatrix);
+    }
+
+    public void Dispose()
+    {
+        simpleDepthShader?.Dispose();
+        if(depthMap != 0) GL.DeleteTexture(depthMap);
+        if(depthMapFBO != 0) GL.DeleteFramebuffer(depthMapFBO);
     }
 }

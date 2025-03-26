@@ -103,6 +103,8 @@ namespace Light_And_Shadow
             shadowFramebuffer.ConfigureShaderAndMatricies();
             GL.BindTexture(TextureTarget.Texture2D, shadowFramebuffer.depthMap);
             
+            shadowFramebuffer.Dispose();
+            
             //Render scene as normal
             currentWorld.DrawWorld(args, DebugMode);
             
