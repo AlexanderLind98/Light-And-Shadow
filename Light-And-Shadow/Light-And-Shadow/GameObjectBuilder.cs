@@ -1,5 +1,6 @@
 using Light_And_Shadow.Behaviors;
 using Light_And_Shadow.Components;
+using Light_And_Shadow.Materials;
 using OpenTK_OBJ;
 using OpenTK.Mathematics;
 
@@ -83,6 +84,11 @@ public class GameObjectBuilder
         if (_material != null && _mesh != null)
         {
             _gameObject.Renderer = new Renderer(_material, _mesh);
+            _material = null;
+        }
+        else
+        {
+            (_material as IDisposable)?.Dispose();
         }
 
         return _gameObject;

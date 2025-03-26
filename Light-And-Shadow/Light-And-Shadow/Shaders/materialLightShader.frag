@@ -11,7 +11,7 @@ struct Material
     float shininess;
 };
 
-struct Light
+struct DirLight
 {
     vec3 direction;
     
@@ -28,13 +28,13 @@ out vec4 FragColor;
 uniform vec3 viewPos;
 
 uniform Material material;
-uniform Light light;
+uniform DirLight dirLight;
 
 void main()
 {
     // Normalize input
     vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(-light.direction);
+    vec3 lightDir = normalize(-dirLight.direction);
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
 
@@ -44,9 +44,9 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     
     // Ambient
-    vec3 ambient = light.ambient * material.ambient;
-    vec3 diffuse = light.diffuse * (diff * material.diffuse);
-    vec3 specular = light.specular * (spec * material.specular);
+    vec3 ambient  = dirLight.ambient  * material.ambient;
+    vec3 diffuse  = dirLight.diffuse  * diff * material.diffuse;
+    vec3 specular = dirLight.specular * spec * material.specular;
 
     // Final lighting based on debug mode
     vec3 result;
