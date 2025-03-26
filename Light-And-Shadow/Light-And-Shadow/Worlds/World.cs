@@ -85,13 +85,7 @@ public abstract class World
     {
         foreach (var obj in GameObjects)
         {
-            Matrix4 model = obj.Transform.CalculateModel();
-            Matrix4 mvp = model * lightSpaceMatrix;
-            
-            depthShader.SetMatrix("model", model);
-            depthShader.SetMatrix("mvp", mvp);
-            
-            obj.Draw(lightSpaceMatrix, camera, this);
+            obj.DrawDepth(depthShader, lightSpaceMatrix);
         }
     }
 

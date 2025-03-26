@@ -18,7 +18,7 @@ public class ShadowFramebuffer
         depthMapFBO = GL.GenFramebuffer();
 
         // 2. Create a 2D texture as the frame buffer's depth buffer
-        int depthMap = GL.GenTexture();
+        depthMap = GL.GenTexture();
         GL.BindTexture(TextureTarget.Texture2D, depthMap);
         
         // Texture parameters
@@ -59,6 +59,6 @@ public class ShadowFramebuffer
         lightSpaceMatrix = lightProjection * lightView;
         
         simpleDepthShader.Use();
-        GL.UniformMatrix4(1, false, ref lightSpaceMatrix);
+        GL.UniformMatrix4(1, true, ref lightSpaceMatrix);
     }
 }

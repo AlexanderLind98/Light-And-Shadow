@@ -24,7 +24,7 @@ public class ShadowWorld : World
 
         rotatingCube = new GameObjectBuilder(Game)
             .Model("SmoothCube")
-            .Material(new mat_default())
+            .Material(new mat_concrete())
             .Position(1.5f, 0f, 0f)
             .Build();
 

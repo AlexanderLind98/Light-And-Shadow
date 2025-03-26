@@ -81,6 +81,20 @@ namespace Light_And_Shadow
                 Renderer.Draw(mvp, model, camera, debugMode, currentWorld);
             }
         }
+
+        public void DrawDepth(Shader depthShader, Matrix4 lightSpaceMatrix)
+        {
+            if(Renderer == null || Renderer.Mesh == null) return;
+            
+            Matrix4 model = Transform.CalculateModel();
+            Matrix4 mvp = model * lightSpaceMatrix;
+            
+            depthShader.Use();
+            depthShader.SetMatrix("model", model);
+            depthShader.SetMatrix("mvp", mvp);
+            
+            Renderer.Mesh.Draw();
+        }
         
         public void Dispose()
         {
