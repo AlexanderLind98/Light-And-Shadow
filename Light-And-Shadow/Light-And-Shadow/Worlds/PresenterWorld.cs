@@ -115,7 +115,7 @@ public class PresenterWorld : World
         for (int i = 0; i < _slides.Count; i++)
         {
             _slides[i].Transform.Position = (i == _currentSlideIndex)
-                ? new Vector3(0, 0, 4)     // In front of camera
+                ? new Vector3(0, 0, 4.5f)     // In front of camera
                 : new Vector3(0, 0, 10f);    // far behind camera
         }
     }
