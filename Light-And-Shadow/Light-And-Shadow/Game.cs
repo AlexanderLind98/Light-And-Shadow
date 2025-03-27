@@ -69,12 +69,12 @@ namespace Light_And_Shadow
 
             currentWorld = index switch
             {
-                1 => new SimpleShapesWorld(this),
+                1 => new PresenterWorld(this),
                 2 => new LightTestWorld(this),
-                3 => new PointLightWorld(this),
+                3 => new BlinnPhongWorld(this),
                 4 => new SpotLightWorld(this),
                 5 => new MultiLightTestWorld(this),
-                //6 => new PresenterWorld(this),
+                6 => new ShadowWorld(this),
                 _ => new SimpleShapesWorld(this)
             };
 

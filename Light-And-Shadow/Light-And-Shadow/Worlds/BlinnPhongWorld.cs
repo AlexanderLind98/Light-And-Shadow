@@ -5,44 +5,49 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Light_And_Shadow.Worlds;
 
-public class LightTestWorld : World
+public class BlinnPhongWorld : World
 {
     private GameObject staticCube;
     private GameObject rotatingCube;
 
-    public LightTestWorld(Game game) : base(game)
+    public BlinnPhongWorld(Game game) : base(game)
     {
-        WorldName = "Light Test World";
-        DirectionalLight.LightColor = Vector3.Zero; 
+        WorldName = "Phong to Blinn-Phong";
     }
-
+    
     public override string DebugLabel
     {
         get
         {
             return Game.DebugMode switch
             {
-                1 => "Ambient",
-                2 => "Diffuse",
-                3 => "Specular",
-                _ => "Combined"
+                5 => "Phong",
+                6 => "Blinn-Phong",
+                _ => "Phong"
             };
         }
     }
-    
+
     protected override void ConstructWorld()
     {
         base.ConstructWorld();
 
+        // GameObjects.Add(new GameObjectBuilder(Game)
+        //     .Model("Monkey")
+        //     .Material(new mat_gold())
+        //     .Position(0, 0, 0)
+        //     .Behavior<RotateObjectBehavior>(Vector3.UnitY, 10f)
+        //     .Build());
+        
         staticCube = new GameObjectBuilder(Game)
             .Model("Cube")
-            .Material(new mat_default())
+            .Material(new mat_gold_simple())
             .Position(-1.5f, 0f, 0f)
             .Build();
 
         rotatingCube = new GameObjectBuilder(Game)
             .Model("SmoothCube")
-            .Material(new mat_default())
+            .Material(new mat_gold_simple())
             .Position(1.5f, 0f, 0f)
             .Behavior<RotateObjectBehavior>(Vector3.UnitX, 20f)
             //.Behavior<RotateObjectBehavior>(Vector3.UnitY, 20f)
@@ -55,27 +60,8 @@ public class LightTestWorld : World
 
     public override void HandleInput(KeyboardState input)
     {
-        if (input.IsKeyPressed(Keys.D1))
-        {
-            Game.DebugMode = 1; // Ambient
-            DirectionalLight.LightColor = Vector3.One; 
-        }
-
-        if (input.IsKeyPressed(Keys.D2))
-        {
-            Game.DebugMode = 2; // Diffuse
-        }
-
-        if (input.IsKeyPressed(Keys.D3))
-        {
-            Game.DebugMode = 3; // Specular
-        }
+        base.HandleInput(input);
         
-        if (input.IsKeyPressed(Keys.D4))
-        {
-            Game.DebugMode = 0; // Full lighting
-        }
-
         if (input.IsKeyPressed(Keys.D5))
         {
             staticCube.Renderer.Material = new mat_gold_simple();
@@ -84,7 +70,18 @@ public class LightTestWorld : World
             rotatingCube.Renderer.Material = new mat_gold_simple();
             rotatingCube.Renderer.Material.UpdateUniforms();
 
-            Game.DebugMode = 0; // Full lighting
+            Game.DebugMode = 5; // phong
+        }
+        
+        if (input.IsKeyPressed(Keys.D6))
+        {
+            staticCube.Renderer.Material = new mat_gold();
+            staticCube.Renderer.Material.UpdateUniforms();
+
+            rotatingCube.Renderer.Material = new mat_gold();
+            rotatingCube.Renderer.Material.UpdateUniforms();
+
+            Game.DebugMode = 6; // Blinn-Phong
         }
     }
 }
