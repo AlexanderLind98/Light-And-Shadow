@@ -10,7 +10,8 @@ GameWindowSettings settings = new GameWindowSettings()
 
 NativeWindowSettings nativeWindowSettings = new NativeWindowSettings()
 {
-    ClientSize = new Vector2i(1920, 1080),
+    //ClientSize = new Vector2i(1920, 1080),
+    ClientSize = new Vector2i(2560, 1600),
     Title = "OBJ Viewer"
 };
 

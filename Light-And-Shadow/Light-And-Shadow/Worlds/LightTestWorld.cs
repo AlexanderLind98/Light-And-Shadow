@@ -38,7 +38,7 @@ public class LightTestWorld : World
 
         staticCube = new GameObjectBuilder(Game)
             .Model("Cube")
-            .Material(new mat_default())
+            .Material(new mat_simple())
             .Position(-1.5f, 0f, 0f)
             .Build();
 
@@ -60,12 +60,15 @@ public class LightTestWorld : World
         if (input.IsKeyPressed(Keys.D1))
         {
             Game.DebugMode = 1; // Ambient
-            DirectionalLight.LightColor = Vector3.One; 
+            DirectionalLight.LightColor = Vector3.One;
+            
         }
 
         if (input.IsKeyPressed(Keys.D2))
         {
             Game.DebugMode = 2; // Diffuse
+            staticCube.Renderer.Material = new mat_default();
+            staticCube.Renderer.Material.UpdateUniforms();
         }
 
         if (input.IsKeyPressed(Keys.D3))

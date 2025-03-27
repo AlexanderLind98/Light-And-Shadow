@@ -32,8 +32,8 @@ public class PresenterWorld : World
         AddSlide("Textures/RenderPipeline.png");
         AddSlide("Textures/VertexArray.png");
         AddSlide("Textures/VertShader.png");
-        AddSlide("Textures/Indices.png");
         AddSlide("Textures/Quad_w_Indices.png");
+        AddSlide("Textures/Indices.png");
         AddSlide("Textures/RenderPipeline.png");
         AddSlide("Textures/Rasterization.png");
         AddSlide("Textures/FragShader.png");
@@ -42,6 +42,7 @@ public class PresenterWorld : World
         
         // Data Flow
         AddSlide("Textures/Objloader.png");
+        AddSlide("Textures/CreateObjModel.png");
         AddSlide("Textures/GenBuffer.png");
         AddSlide("Textures/CreateObjModel.png");
         AddSlide("Textures/Material.png");
