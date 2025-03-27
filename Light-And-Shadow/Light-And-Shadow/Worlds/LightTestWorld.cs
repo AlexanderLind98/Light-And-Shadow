@@ -13,6 +13,7 @@ public class LightTestWorld : World
     public LightTestWorld(Game game) : base(game)
     {
         WorldName = "Light Test World";
+        DirectionalLight.LightColor = Vector3.Zero; 
     }
 
     public override string DebugLabel
@@ -57,6 +58,7 @@ public class LightTestWorld : World
         if (input.IsKeyPressed(Keys.D1))
         {
             Game.DebugMode = 1; // Ambient
+            DirectionalLight.LightColor = Vector3.One; 
         }
 
         if (input.IsKeyPressed(Keys.D2))
@@ -68,8 +70,13 @@ public class LightTestWorld : World
         {
             Game.DebugMode = 3; // Specular
         }
-
+        
         if (input.IsKeyPressed(Keys.D4))
+        {
+            Game.DebugMode = 0; // Full lighting
+        }
+
+        if (input.IsKeyPressed(Keys.D5))
         {
             staticCube.Renderer.Material = new mat_gold_simple();
             staticCube.Renderer.Material.UpdateUniforms();
@@ -79,5 +86,7 @@ public class LightTestWorld : World
 
             Game.DebugMode = 0; // Full lighting
         }
+        
+        
     }
 }

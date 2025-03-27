@@ -19,7 +19,8 @@ public abstract class World
 
     public Vector3 SunDirection = new Vector3(-0.2f, -1.0f, -0.3f); //Set default sun direction;
     public Vector3 SunColor = new Vector3(2f, 2f, 1.8f); //Set default sun direction;
-    public Color4 SkyColor = Color4.CornflowerBlue;
+    //public Color4 SkyColor = Color4.CornflowerBlue;
+    public Color4 SkyColor = Color4.Black;
     
     public DirectionalLight DirectionalLight;
     public List<PointLight> PointLights = new();
