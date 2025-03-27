@@ -28,6 +28,7 @@ public class ShadowWorld : World
             .Model("SmoothCube")
             .Material(new mat_marble())
             .Position(1.5f, 0f, 0f)
+            .Behavior<RotateObjectBehavior>(Vector3.UnitX, 20f)
             .Build();
 
         GameObjects.Add(staticCube);
