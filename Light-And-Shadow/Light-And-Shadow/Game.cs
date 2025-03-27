@@ -22,7 +22,8 @@ namespace Light_And_Shadow
             GL.ClearColor(Color4.Black);
             
             //currentWorld = new TestWorld(this);
-            currentWorld = new LightTestWorld(this);
+            //currentWorld = new LightTestWorld(this);
+            currentWorld = new PresenterWorld(this);
         }
         
         protected override void OnLoad()
@@ -73,7 +74,7 @@ namespace Light_And_Shadow
                 3 => new PointLightWorld(this),
                 4 => new SpotLightWorld(this),
                 5 => new MultiLightTestWorld(this),
-                //6 => new PresenterWorld(this), //TODO: Implement presenter models
+                //6 => new PresenterWorld(this),
                 _ => new SimpleShapesWorld(this)
             };
 

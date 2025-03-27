@@ -28,6 +28,43 @@ public static class GameObjectFactory
         triangleObject.Transform.Position = new Vector3(0, 0, -5);
         return triangleObject;
     }
+    public static GameObject CreateQuad(Game gameInstance)
+    {
+        Texture wallTexture = new Texture("Textures/wall.jpg");
+        var uniforms = new Dictionary<string, object> { { "texture0", wallTexture } };
+        Material cubeMaterial = new Material("Shaders/shader.vert", "Shaders/shader.frag", uniforms);
+        Renderer cubeRenderer = new Renderer(cubeMaterial, new QuadMesh());
+        GameObject QuadObject = new GameObject(gameInstance)
+        {
+            Renderer = cubeRenderer
+        };
+        QuadObject.Transform.Position = new Vector3(0, 0, 0);
+        //cubeObject.AddComponent<MoveObjectBehaviour>();
+        return QuadObject;
+    }
+    
+    public static GameObject CreateTexturedQuad(Game gameInstance, string texturePath)
+    {
+        Texture texture = Texture.FromFile(texturePath);
+
+        var uniforms = new Dictionary<string, object>
+        {
+            { "texture0", texture },
+            { "visibility", 1f } // Starter synlig
+        };
+
+        Material material = new Material("Shaders/shader.vert", "Shaders/shader.frag", uniforms);
+        Renderer renderer = new Renderer(material, new QuadMesh());
+
+        GameObject quad = new GameObject(gameInstance)
+        {
+            Renderer = renderer
+        };
+
+        quad.Transform.Position = new Vector3(0, 0, -5);
+        return quad;
+    }
+
 
     /// <summary>
     /// Creates a textured cube GameObject with a wall texture and shader material.

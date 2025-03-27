@@ -7,6 +7,23 @@ namespace Light_And_Shadow
     {
         private int handle;
 
+        private static Dictionary<string, Texture> cache = new();
+
+        static Texture()
+        {
+            StbImage.stbi_set_flip_vertically_on_load(1);
+        }
+
+        public static Texture FromFile(string path)
+        {
+            if (cache.TryGetValue(path, out var tex))
+                return tex;
+
+            tex = new Texture(path);
+            cache[path] = tex;
+            return tex;
+        }
+
         public Texture(string path)
         {
             // Generate a texture handle and bind it to TextureUnit 0.

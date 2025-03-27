@@ -4,70 +4,85 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Light_And_Shadow.Worlds;
 
+/// <summary>
+/// A world that presents slides using textured quads,
+/// allowing the user to cycle through them interactively.
+/// </summary>
 public class PresenterWorld : World
 {
-    private GameObject presenterOpen;
-    private GameObject presenterClosed;
-    private bool isSpeaking = false;
+    private readonly List<GameObject> _slides = new();
+    private int _currentSlideIndex = 0;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PresenterWorld"/> class.
+    /// </summary>
+    /// <param name="game">The game instance.</param>
     public PresenterWorld(Game game) : base(game) { }
 
+    /// <inheritdoc />
     protected override void ConstructWorld()
     {
         base.ConstructWorld();
 
-        presenterClosed = new GameObjectBuilder(Game)
-            .Model("Presenter_Closed")
-            .Material(new mat_default())
-            .Position(0, 0, 0)
-            .Build();
+        // Load slides
+        AddSlide("Textures/IntroSlide.png");
+        AddSlide("Textures/RenderPipeline.png");
+        AddSlide("Textures/VertexArray.png");
+        AddSlide("Textures/Rasterization.png");
 
-        presenterOpen = new GameObjectBuilder(Game)
-            .Model("Presenter_Open")
-            .Material(new mat_default())
-            .Position(0, 0, 0)
-            .Build();
-
-        GameObjects.Add(presenterClosed);
-        GameObjects.Add(presenterOpen);
-
-        UpdatePresenterVisibility();
+        UpdateSlideVisibility();
     }
 
+    /// <inheritdoc />
     public override void HandleInput(KeyboardState input)
     {
-        // Skift mellem åben/lukket mund
-        if (input.IsKeyPressed(Keys.M))
-        {
-            isSpeaking = !isSpeaking;
-            UpdatePresenterVisibility();
-        }
+        if (input.IsKeyPressed(Keys.P)) ChangeSlide(1);
+        if (input.IsKeyPressed(Keys.O)) ChangeSlide(-1);
 
-        // Skift mellem lyskomponenter
-        if (input.IsKeyPressed(Keys.D1))
-        {
-            Game.DebugMode = 1; // Ambient
-        }
+        // Toggle debug visualizations
+        if (input.IsKeyPressed(Keys.D1)) Game.DebugMode = 1;
+        if (input.IsKeyPressed(Keys.D2)) Game.DebugMode = 2;
+        if (input.IsKeyPressed(Keys.D3)) Game.DebugMode = 3;
+        if (input.IsKeyPressed(Keys.D4)) Game.DebugMode = 0;
+    }
 
-        if (input.IsKeyPressed(Keys.D2))
+    /// <summary>
+    /// Changes the current slide based on input direction.
+    /// </summary>
+    /// <param name="direction">Direction to move the slide index (+1 or -1).</param>
+    private void ChangeSlide(int direction)
+    {
+        int newIndex = Math.Clamp(_currentSlideIndex + direction, 0, _slides.Count - 1);
+        if (newIndex != _currentSlideIndex)
         {
-            Game.DebugMode = 2; // Diffuse
-        }
-
-        if (input.IsKeyPressed(Keys.D3))
-        {
-            Game.DebugMode = 3; // Specular
-        }
-
-        if (input.IsKeyPressed(Keys.D4))
-        {
-            Game.DebugMode = 0; // Full lighting
+            _currentSlideIndex = newIndex;
+            Console.WriteLine($"Slide: {_currentSlideIndex + 1}/{_slides.Count}");
+            UpdateSlideVisibility();
         }
     }
 
-    private void UpdatePresenterVisibility()
+    /// <summary>
+    /// Adds a textured quad slide to the world.
+    /// </summary>
+    /// <param name="texturePath">The file path to the slide texture.</param>
+    private void AddSlide(string texturePath)
     {
-        presenterClosed.Renderer.Material.SetUniform("material.ambient", isSpeaking ? new Vector3(0.1f) : new Vector3(0.7f));
-        presenterOpen.Renderer.Material.SetUniform("material.ambient", isSpeaking ? new Vector3(0.7f) : new Vector3(0.1f));
+        var slide = GameObjectFactory.CreateTexturedQuad(Game, texturePath);
+        slide.Transform.Position = new Vector3(0, 0, 100); // Initially hidden
+        _slides.Add(slide);
+        GameObjects.Add(slide);
+    }
+
+    /// <summary>
+    /// Updates the visibility of slides to ensure only the current one is shown.
+    /// </summary>
+    private void UpdateSlideVisibility()
+    {
+        for (int i = 0; i < _slides.Count; i++)
+        {
+            _slides[i].Transform.Position = (i == _currentSlideIndex)
+                ? new Vector3(0, 0, 4.5f)     // In front of camera
+                : new Vector3(0, 0, 10f);    // far behind camera
+        }
     }
 }
