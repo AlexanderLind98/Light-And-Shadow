@@ -17,7 +17,10 @@ public class PresenterWorld : World
     /// Initializes a new instance of the <see cref="PresenterWorld"/> class.
     /// </summary>
     /// <param name="game">The game instance.</param>
-    public PresenterWorld(Game game) : base(game) { }
+    public PresenterWorld(Game game) : base(game)
+    {
+        WorldName = "Præsentation";
+    }
 
     /// <inheritdoc />
     protected override void ConstructWorld()

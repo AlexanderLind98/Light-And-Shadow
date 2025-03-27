@@ -34,6 +34,7 @@ namespace Light_And_Shadow
         { 
             //Movement moved -> CamMoveBehavior.cs
         }
+        
         public Matrix4 GetViewProjection()
         {
             Matrix4 view = Matrix4.LookAt(gameObject.Transform.Position, gameObject.Transform.Position + Front, Up);
@@ -41,6 +42,5 @@ namespace Light_And_Shadow
 
             return view * projection;
         }
-
     }
 }
