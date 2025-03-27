@@ -7,6 +7,8 @@ namespace Light_And_Shadow.Worlds;
 
 public class LightTestWorld : World
 {
+    private readonly List<GameObject> _slides = new();
+    private int _currentSlideIndex = 0;
     private GameObject staticCube;
     private GameObject rotatingCube;
 

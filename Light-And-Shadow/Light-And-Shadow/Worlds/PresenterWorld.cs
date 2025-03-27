@@ -31,16 +31,18 @@ public class PresenterWorld : World
         AddSlide("Textures/IntroSlide.png");
         AddSlide("Textures/RenderPipeline.png");
         AddSlide("Textures/VertexArray.png");
-        AddSlide("Textures/RenderPipeline.png");
+        AddSlide("Textures/VertShader.png");
         AddSlide("Textures/Indices.png");
         AddSlide("Textures/Quad_w_Indices.png");
         AddSlide("Textures/RenderPipeline.png");
         AddSlide("Textures/Rasterization.png");
+        AddSlide("Textures/FragShader.png");
         AddSlide("Textures/RenderPipeline.png");
         AddSlide("Textures/DoubleFrameBuffer.png");
         
         // Data Flow
         AddSlide("Textures/Objloader.png");
+        AddSlide("Textures/GenBuffer.png");
         AddSlide("Textures/CreateObjModel.png");
         AddSlide("Textures/Material.png");
         AddSlide("Textures/Material_w_Uniforms.png");
@@ -54,17 +56,13 @@ public class PresenterWorld : World
         AddSlide("Textures/Spaces.png");
         AddSlide("Textures/Renderer.png");
         
+        /*//Lighting
+        
         AddSlide("Textures/BlinnPhong_Diagram.png");
         AddSlide("Textures/DirLight_Diagram.png");
         AddSlide("Textures/PhongIssue_Diagram.png");
         AddSlide("Textures/PointLight_Diagram.png");
-        AddSlide("Textures/SpotLight_Diagram.png");
-        
-        /*AddSlide("Textures/IntroSlide.png");
-        AddSlide("Textures/IntroSlide.png");
-        AddSlide("Textures/IntroSlide.png");
-        AddSlide("Textures/IntroSlide.png");
-        AddSlide("Textures/IntroSlide.png");*/
+        AddSlide("Textures/SpotLight_Diagram.png");*/
         
         UpdateSlideVisibility();
     }
@@ -117,7 +115,6 @@ public class PresenterWorld : World
         for (int i = 0; i < _slides.Count; i++)
         {
             _slides[i].Transform.Position = (i == _currentSlideIndex)
-                //? new Vector3(0, 0, 4.5f)     // In front of camera
                 ? new Vector3(0, 0, 4)     // In front of camera
                 : new Vector3(0, 0, 10f);    // far behind camera
         }
