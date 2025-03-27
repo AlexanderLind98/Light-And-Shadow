@@ -65,6 +65,8 @@ public class SpotLight : Light
     {
         if (currentWorld.SpotLights.Count == 1)
             return;
+        
+        Console.WriteLine("Color is: " + DefaultColor);
 
         Visualizer = new GameObjectBuilder(currentWorld.Game)
             .Model("Arrow")

@@ -70,12 +70,21 @@ namespace Light_And_Shadow
             currentWorld = index switch
             {
                 1 => new PresenterWorld(this),
+<<<<<<< Updated upstream
                 2 => new SimpleShapesWorld(this),
                 3 => new LightTestWorld(this),
                 4 => new BlinnPhongWorld(this),
                 5 => new SpotLightWorld(this),
                 6 => new MultiLightTestWorld(this),
                 7 => new ShadowWorld(this),
+=======
+                2 => new LightTestWorld(this),
+                3 => new BlinnPhongWorld(this),
+                4 => new PointLightWorld(this),
+                5 => new MultiLightWorld(this),
+                6 => new ShadowWorld(this),
+                _ => new SimpleShapesWorld(this)
+>>>>>>> Stashed changes
             };
 
             currentWorld.LoadWorld();

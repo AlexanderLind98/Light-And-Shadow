@@ -42,4 +42,9 @@ public class PointLight : Light
 
         currentWorld.GameObjects.Add(Visualizer);
     }
+    
+    public void UpdateVisualizer(World currentWorld)
+    {
+        if (Visualizer != null) Visualizer.Transform.Position = Transform.Position;
+    }
 }

@@ -17,6 +17,7 @@ public class Light
     public void ToggleLight()
     {
         LightColor = LightColor == DefaultColor ? Vector3.Zero : DefaultColor;
+        Console.WriteLine("New color is: " + LightColor);
     }
     
     protected Vector3 ConvertEulerToDirection(Vector3 rotation)
