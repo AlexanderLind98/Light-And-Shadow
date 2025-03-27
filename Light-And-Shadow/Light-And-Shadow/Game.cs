@@ -14,6 +14,9 @@ namespace Light_And_Shadow
         public int DebugMode { get; set; } = 0;
 
         private World currentWorld;
+        private ShadowFramebuffer shadowFramebuffer;
+        private ShadowMapDebugRenderer debugRenderer;
+
 
         public Game(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -28,7 +31,9 @@ namespace Light_And_Shadow
         protected override void OnLoad()
         {
             base.OnLoad();
-            
+            shadowFramebuffer = new ShadowFramebuffer();
+            debugRenderer = new ShadowMapDebugRenderer(this, shadowFramebuffer.depthMap);
+
             currentWorld.LoadWorld();
         }
 
@@ -84,13 +89,13 @@ namespace Light_And_Shadow
         {
             base.OnRenderFrame(args);
 
-            ShadowFramebuffer shadowFramebuffer = new ShadowFramebuffer();
+            
             
             // Render to depth map
             GL.Viewport(0, 0, shadowFramebuffer.SHADOW_WIDTH, shadowFramebuffer.SHADOW_HEIGHT);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, shadowFramebuffer.depthMapFBO);
             GL.Clear(ClearBufferMask.DepthBufferBit);
-            shadowFramebuffer.ConfigureShaderAndMatricies();
+            shadowFramebuffer.ConfigureShaderAndMatricies(currentWorld.SunDirection);
         
             //Render depth map from scene
             currentWorld.RenderShadowMap(shadowFramebuffer.lightSpaceMatrix, shadowFramebuffer.simpleDepthShader);
@@ -100,24 +105,25 @@ namespace Light_And_Shadow
             // Render scene as normal using the shadow map
             GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            shadowFramebuffer.ConfigureShaderAndMatricies();
+            shadowFramebuffer.ConfigureShaderAndMatricies(currentWorld.SunDirection);
             
             GL.ActiveTexture(TextureUnit.Texture1);
             GL.BindTexture(TextureTarget.Texture2D, shadowFramebuffer.depthMap);
             currentWorld.ShadowMatrix = shadowFramebuffer.lightSpaceMatrix;
 
-            shadowFramebuffer.Dispose();
+          
             
             //Render scene as normal
             currentWorld.DrawWorld(args, DebugMode);
-            
+            debugRenderer.Draw(shadowFramebuffer.depthMap);
+
             SwapBuffers();
         }
 
         protected override void OnUnload()
         {
             currentWorld.UnloadWorld();
-            
+            shadowFramebuffer.Dispose();
             base.OnUnload();
         }
     }

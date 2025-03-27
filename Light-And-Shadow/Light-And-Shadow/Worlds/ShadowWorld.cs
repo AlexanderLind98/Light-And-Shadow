@@ -1,6 +1,7 @@
 using Light_And_Shadow.Behaviors;
 using Light_And_Shadow.Materials;
 using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Light_And_Shadow.Worlds;
 
@@ -34,4 +35,20 @@ public class ShadowWorld : World
         GameObjects.Add(staticCube);
         GameObjects.Add(rotatingCube);
     }
+    
+    public override void HandleInput(KeyboardState input)
+    {
+        const float step = 0.5f;
+
+        if (input.IsKeyDown(Keys.Left))  SunDirection.X -= step;
+        if (input.IsKeyDown(Keys.Right)) SunDirection.X += step;
+        if (input.IsKeyDown(Keys.Up))    SunDirection.Y += step;
+        if (input.IsKeyDown(Keys.Down))  SunDirection.Y -= step;
+        if (input.IsKeyDown(Keys.PageUp)) SunDirection.Z += step;
+        if (input.IsKeyDown(Keys.PageDown)) SunDirection.Z -= step;
+
+        DirectionalLight.Transform.Rotation = SunDirection;
+        DirectionalLight.UpdateVisualizer(this);
+    }
+
 }

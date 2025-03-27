@@ -34,7 +34,6 @@ namespace OpenTK_OBJ
             Matrix4 rotationZ = Matrix4.CreateRotationZ(Rotation.Z);
             Matrix4 scale = Matrix4.CreateScale(Scale);
 
-            // Adjust the multiplication order if needed for your specific transformation pipeline.
             return scale * rotationZ * rotationY * rotationX * translation;
         }
     }

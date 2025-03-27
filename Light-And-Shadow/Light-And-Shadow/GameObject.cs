@@ -87,7 +87,9 @@ namespace Light_And_Shadow
             if(Renderer == null || Renderer.Mesh == null) return;
             
             Matrix4 model = Transform.CalculateModel();
-            Matrix4 mvp = model * lightSpaceMatrix;
+            Matrix4 mvp = lightSpaceMatrix * model;
+            //Matrix4 mvp =  model * lightSpaceMatrix;
+
             
             depthShader.Use();
             depthShader.SetMatrix("model", model);
