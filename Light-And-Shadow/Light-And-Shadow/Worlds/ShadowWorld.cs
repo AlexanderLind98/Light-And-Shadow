@@ -16,24 +16,35 @@ public class ShadowWorld : World
     {
         base.ConstructWorld();
 
-        staticCube = new GameObjectBuilder(Game)
-            .Model("GroundFloor")
-            .Material(new mat_gold())
-            .Position(0f, -1f, 0f)
-            .Scale(5, 1, 5)
-            .Build();
+        // staticCube = new GameObjectBuilder(Game)
+        //     .Model("GroundFloor")
+        //     .Material(new mat_gold())
+        //     .Position(0f, -1f, 0f)
+        //     .Scale(5, 1, 5)
+        //     .Build();
+        //
+        // // GameObjects.Add(GameObjectFactory.CreateCube(Game));
+        //
+        // rotatingCube = new GameObjectBuilder(Game)
+        //     .Model("SmoothCube")
+        //     .Material(new mat_marble())
+        //     .Position(1.5f, 0f, 0f)
+        //     .Behavior<RotateObjectBehavior>(Vector3.UnitX, 20f)
+        //     .Build();
+        //
+        // GameObjects.Add(staticCube);
+        // GameObjects.Add(rotatingCube);
         
-        // GameObjects.Add(GameObjectFactory.CreateCube(Game));
-
-        rotatingCube = new GameObjectBuilder(Game)
-            .Model("SmoothCube")
-            .Material(new mat_marble())
-            .Position(1.5f, 0f, 0f)
-            .Behavior<RotateObjectBehavior>(Vector3.UnitX, 20f)
+        DirectionalLight.LightColor = Vector3.Zero;
+        
+        var monkey = new GameObjectBuilder(Game)
+            .Model("Monkey")
+            .Material(new mat_gold_simple()) 
+            .Position(0f, 0f, 0f)
+            .Behavior<RotateObjectBehavior>(Vector3.UnitY, 10f)
             .Build();
 
-        GameObjects.Add(staticCube);
-        GameObjects.Add(rotatingCube);
+        GameObjects.Add(monkey);
     }
     
     public override void HandleInput(KeyboardState input)

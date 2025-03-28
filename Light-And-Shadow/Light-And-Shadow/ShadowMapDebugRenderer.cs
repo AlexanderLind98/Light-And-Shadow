@@ -29,8 +29,13 @@ public class ShadowMapDebugRenderer
         {
             Renderer = _renderer
         };
-        _quad.Transform.Position = new Vector3(-0.75f, -0.75f, 0f);
-        _quad.Transform.Scale = new Vector3(0.25f, 0.25f, 1f);
+ 
+        float quadSize = 0.75f;
+        float half = quadSize / 2f;
+
+        _quad.Transform.Scale = new Vector3(quadSize, quadSize, 1f);
+        _quad.Transform.Position = new Vector3(-1f + half, -1f + half, 0f);
+
     }
 
     public void Draw(int depthMapTextureHandle)
@@ -39,10 +44,9 @@ public class ShadowMapDebugRenderer
         GL.ActiveTexture(TextureUnit.Texture0);
         GL.BindTexture(TextureTarget.Texture2D, depthMapTextureHandle);
 
-        // MVP uden kamera (quad i screen space)
         Matrix4 model = _quad.Transform.CalculateModel();
-        //Matrix4 mvp = model; // No view/projection
-        Matrix4 mvp = Matrix4.Identity;
+        Matrix4 mvp = model;
+
 
         _material.UseShader();
         _material.SetUniform("mvp", mvp);

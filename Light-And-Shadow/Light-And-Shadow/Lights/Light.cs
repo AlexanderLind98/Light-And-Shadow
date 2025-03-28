@@ -19,7 +19,7 @@ public class Light
         LightColor = LightColor == DefaultColor ? Vector3.Zero : DefaultColor;
     }
     
-    protected Vector3 ConvertEulerToDirection(Vector3 rotation)
+    public static Vector3 ConvertEulerToDirection(Vector3 rotation)
     {
         // Convert Euler angles to radians if necessary (assuming they are already in radians)
         float pitch = rotation.X; // Pitch (rotation around X-axis)

@@ -92,7 +92,7 @@ namespace Light_And_Shadow
 
             
             depthShader.Use();
-            depthShader.SetMatrix("model", model);
+            //depthShader.SetMatrix("model", model);
             depthShader.SetMatrix("mvp", mvp);
             
             Renderer.Mesh.Draw();

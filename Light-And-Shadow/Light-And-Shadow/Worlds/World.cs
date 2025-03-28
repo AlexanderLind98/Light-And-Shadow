@@ -122,11 +122,11 @@ public abstract class World
     {
         GameObject cameraObject = new GameObject(Game);
         cameraObject.AddComponent<Camera>(60.0f, (float)Game.Size.X, (float)Game.Size.Y, 0.3f, 1000.0f);
-        cameraObject.AddComponent<CamMoveBehavior>();
+       // cameraObject.AddComponent<CamMoveBehavior>();
         camera = cameraObject.GetComponent<Camera>();
         GameObjects.Add(cameraObject);
 
         //Grab focus for cursor, locking it to window
-        Game.CursorState = CursorState.Grabbed;
+        //Game.CursorState = CursorState.Grabbed;
     }
 }

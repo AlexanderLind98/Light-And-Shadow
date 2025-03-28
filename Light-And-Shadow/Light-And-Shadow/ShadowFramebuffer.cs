@@ -55,24 +55,23 @@ public class ShadowFramebuffer
         // 4. Load shader (no matrices here)
         simpleDepthShader = new Shader("shaders/DepthShader.vert", "shaders/DepthShader.frag");
     }
-
-    public void ConfigureShaderAndMatricies(Vector3 lightDirection)
+    
+    public void ConfigureShaderFromDirection(Vector3 lightDirection)
     {
         Vector3 lightDir = Vector3.Normalize(lightDirection);
-        Vector3 sceneCenter = new Vector3(0f, 0f, 0f); // or avg of bounding boxes
-        Vector3 lightPos = sceneCenter - lightDir * 20f;
+        Vector3 sceneCenter = new Vector3(0f, 0f, 0f); // monkey pos
+        Vector3 lightPos = sceneCenter - lightDir * 5f; // light in front of monkey
 
-
-        Matrix4 lightView = Matrix4.LookAt(lightPos, Vector3.Zero, Vector3.UnitY);
-        Matrix4 lightProjection = Matrix4.CreateOrthographic(20f, 20f, 0.1f, 30f);
-
+        Matrix4 lightView = Matrix4.LookAt(lightPos, sceneCenter, Vector3.UnitY);
+        Matrix4 lightProjection = Matrix4.CreateOrthographic(10f, 10f, 0.1f, 10f); // Zoom monkey
 
         lightSpaceMatrix = lightProjection * lightView;
-        //lightSpaceMatrix = lightView * lightProjection;
 
         simpleDepthShader.Use();
         simpleDepthShader.SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
     }
+
+
 
     public void Dispose()
     {
