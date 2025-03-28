@@ -15,6 +15,8 @@ public class ShadowWorld : World
     protected override void ConstructWorld()
     {
         base.ConstructWorld();
+        DirectionalLight.Transform.Position = new Vector3(0, 0, 3);
+        DirectionalLight.Transform.Rotation = SunDirection;
 
         // staticCube = new GameObjectBuilder(Game)
         //     .Model("GroundFloor")
@@ -35,7 +37,6 @@ public class ShadowWorld : World
         // GameObjects.Add(staticCube);
         // GameObjects.Add(rotatingCube);
         
-        DirectionalLight.LightColor = Vector3.Zero;
         
         var monkey = new GameObjectBuilder(Game)
             .Model("Monkey")

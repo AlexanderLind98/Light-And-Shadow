@@ -1,4 +1,5 @@
-﻿#version 460 core
+﻿//depthshader.frag
+#version 460 core
 out vec4 FragColor;
 
 void main()

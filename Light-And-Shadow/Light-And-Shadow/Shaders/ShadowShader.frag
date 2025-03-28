@@ -1,3 +1,4 @@
+//shadowshader.frag
 #version 460 core
 
 // debug mode input 
@@ -237,11 +238,11 @@ void main()
     vec3 norm = normalize(fs_in.Normal);
     vec3 viewDir = normalize(viewPos - fs_in.FragPos);
 
-    // === SHADOW DEBUG START ===
-    float shadowDebug = ShadowCalculation(fs_in.FragPosLightSpace);
-    FragColor = vec4(vec3(1.0 - shadowDebug), 1.0); // White = light, Black = shadow
-    return;
-    // === SHADOW DEBUG END ===
+//    // === SHADOW DEBUG START ===
+//    float shadowDebug = ShadowCalculation(fs_in.FragPosLightSpace);
+//    FragColor = vec4(vec3(1.0 - shadowDebug), 1.0); // White = light, Black = shadow
+//    return;
+//    // === SHADOW DEBUG END ===
 
     vec3 result = CalcDirLight(dirLight, norm, viewDir);
 
@@ -261,7 +262,7 @@ void main()
         }
     }
 
-    //FragColor = vec4(result, 1.0f);
+    FragColor = vec4(result, 1.0f);
 
 //    vec3 projCoords = fs_in.FragPosLightSpace.xyz / fs_in.FragPosLightSpace.w;
 //    projCoords = projCoords * 0.5 + 0.5; // [0,1] space
