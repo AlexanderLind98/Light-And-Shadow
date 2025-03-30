@@ -48,7 +48,13 @@ namespace Light_And_Shadow.Components
             Material.SetUniform("viewPos", (Vector3)camera.Position);
             Material.SetUniform("debugMode", currentDebugMode);
             
-            Material.SetUniform("lightSpaceMatrix", currentWorld.ShadowMatrix); // New: push the shadow matrix
+            Material.SetUniform("objectColor", new Vector3(1.0f)); 
+            Material.SetUniform("ambientStrength", 0.1f);          
+            Material.SetUniform("specularStrength", 0.5f);
+            Material.SetUniform("lightColor", currentWorld.DirectionalLight.LightColor);
+            Material.SetUniform("lightPos", currentWorld.DirectionalLight.Transform.Rotation);
+            
+            Material.SetUniform("lightSpaceMatrix", currentWorld.ShadowMatrix); 
             Material.SetUniform("shadowMap", 1); // Tell shader to sample from TextureUnit1
             
             Mesh.Draw();

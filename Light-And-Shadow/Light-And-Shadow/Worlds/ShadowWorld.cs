@@ -40,6 +40,7 @@ public class ShadowWorld : World
         
         var monkey = new GameObjectBuilder(Game)
             .Model("Monkey")
+            //.Material(new mat_gold()) 
             .Material(new mat_gold_simple()) 
             .Position(0f, 0f, 0f)
             .Behavior<RotateObjectBehavior>(Vector3.UnitY, 10f)
