@@ -71,7 +71,6 @@ uniform int numPointLights;
 uniform int numSpotLights;
 uniform PointLight pointLights[MAX_POINTLIGHTS];
 uniform SpotLight spotLights[MAX_SPOTLIGHTS];
-//uniform sampler2D texture0;
 
 //Prototypes / definitions
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
@@ -121,6 +120,17 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     vec3 ambient  = light.ambient  * material.ambient;
     vec3 diffuse = light.diffuse * (diff * material.diffuse);
     vec3 specular = light.specular * SpecResult(lightDir, viewDir, normal);
+    
+    vec3 texColor = vec3(1.0f);
+    
+    if(texture(material.diffTex, texCoord).a > 0.0f)
+    {
+        texColor = texture(material.diffTex, texCoord).rgb;
+        
+        ambient *= texColor;
+        diffuse *= texColor;
+        specular *= texColor;   
+    }
 
     // Final lighting based on debug mode
     return BlinnPhongResult(ambient, diffuse, specular);

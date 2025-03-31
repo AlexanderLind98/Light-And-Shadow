@@ -78,7 +78,6 @@ namespace Light_And_Shadow.Components
         {
             int numSpotLights = currentWorld.SpotLights.Count;
             Material.SetUniform("numSpotLights", numSpotLights);
-            Console.WriteLine(currentWorld.SpotLights.Count);
             
             for (int i = 0; i < numSpotLights; i++)
             {

@@ -10,6 +10,7 @@ namespace Light_And_Shadow.Worlds;
 public class LightTestWorld : World
 {
     private GameObject room;
+    private GameObject statue;
     private GameObject staticCube;
     private GameObject rotatingCube;
 
@@ -42,9 +43,15 @@ public class LightTestWorld : World
         
         room = new GameObjectBuilder(Game)
             .Model("Arches")
-            .Material(new mat_concrete())
+            .Material(new mat_wall())
             .Position(0f, -2f, 0f)
-            .Scale(5, 5, 5)
+            .Build();
+        
+        statue = new GameObjectBuilder(Game)
+            .Model("Statue")
+            .Material(new mat_marble())
+            .Position(0, -2f, -10f)
+            .Scale(5f, 5f, 5f)
             .Build();
 
         staticCube = new GameObjectBuilder(Game)
@@ -61,11 +68,12 @@ public class LightTestWorld : World
             .Build();
 
         GameObjects.Add(room);
+        GameObjects.Add(statue);
         GameObjects.Add(staticCube);
         GameObjects.Add(rotatingCube);
         
         new SpotLight(this, Color4.White, 1f, 15.0f, 20.0f);
-        SpotLights[0].ToggleLight();
+        // SpotLights[0].ToggleLight();
     }
 
     public override void HandleInput(KeyboardState input)
