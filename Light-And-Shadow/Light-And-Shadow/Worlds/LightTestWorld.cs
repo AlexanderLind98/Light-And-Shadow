@@ -43,7 +43,7 @@ public class LightTestWorld : World
         
         room = new GameObjectBuilder(Game)
             .Model("Arches")
-            .Material(new mat_wall())
+            .Material(new mat_box())
             .Position(0f, -2f, 0f)
             .Build();
         
@@ -56,15 +56,15 @@ public class LightTestWorld : World
 
         staticCube = new GameObjectBuilder(Game)
             .Model("SmoothCube")
-            .Material(new mat_chrome())
+            .Material(new mat_box())
             .Position(-1.5f, 0f, 0f)
             .Build();
 
         rotatingCube = new GameObjectBuilder(Game)
             .Model("SmoothCube")
-            .Material(new mat_gold())
+            .Material(new mat_chrome())
             .Position(1.5f, 0f, 0f)
-            .Behavior<RotateObjectBehavior>(Vector3.UnitX, 20f)
+            .Behavior<RotateObjectBehavior>(Vector3.UnitX, 1f)
             .Build();
 
         GameObjects.Add(room);

@@ -8,6 +8,7 @@ public class mat_wall : Material
     public mat_wall() : base()
     {
         uniforms.Add("material.diffTex", new Texture("Textures/wall.jpg"));
+        uniforms.Add("material.specTex", new Texture("Textures/blank.jpg"));
         uniforms.Add("material.ambient", new Vector3(0.2f));
         uniforms.Add("material.diffuse", new Vector3(0.2f));
         uniforms.Add("material.specular", new Vector3(0.1f));

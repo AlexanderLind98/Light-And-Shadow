@@ -11,6 +11,7 @@ struct Material
     vec3 specular;
     float shininess;
     sampler2D diffTex;
+    sampler2D specTex;
 };
 
 struct DirLight
@@ -87,9 +88,9 @@ float SpecResult(vec3 lightDir, vec3 viewDir, vec3 normal)
     
     // specular shading
     vec3 reflectDir = reflect(-lightDir, normal);
-    const float energyConservation = (50.0 + material.shininess) / (50.0 * pi);
+    const float energyConservation = (16.0 + material.shininess) / (16.0 * pi);
     float spec = energyConservation * pow(max(dot(normal, halfwayDir), 0.0f), material.shininess);
-    
+            
     return spec;
 }
 
@@ -119,7 +120,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     // combine results
     vec3 ambient  = light.ambient  * material.ambient;
     vec3 diffuse = light.diffuse * diff * material.diffuse;
-    vec3 specular = light.specular * SpecResult(lightDir, viewDir, normal);
+    vec3 specular = light.specular * SpecResult(lightDir, viewDir, normal) * vec3(texture(material.specTex, texCoord));
     
     vec3 texColor = vec3(1.0f);
     
@@ -150,7 +151,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     // combine results
     vec3 ambient = light.ambient  * material.diffuse;
     vec3 diffuse = light.diffuse * (diff * material.diffuse);
-    vec3 specular = light.specular * SpecResult(lightDir, viewDir, normal);
+    vec3 specular = light.specular * SpecResult(lightDir, viewDir, normal) * vec3(texture(material.specTex, texCoord));
     
     ambient  *= attenuation;
     diffuse  *= attenuation;
@@ -181,7 +182,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     // Ambient
     vec3 ambient = light.ambient * material.ambient;
     vec3 diffuse = light.diffuse * (diff * material.diffuse);
-    vec3 specular = light.specular * SpecResult(lightDir, viewDir, normal);
+    vec3 specular = light.specular * SpecResult(lightDir, viewDir, normal) * vec3(texture(material.specTex, texCoord));
 
     float distance    = length(light.position - fragPos);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
