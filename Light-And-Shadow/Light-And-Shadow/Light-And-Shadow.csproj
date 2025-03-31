@@ -69,7 +69,7 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Models\Arches.obj">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Models\Room.obj">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

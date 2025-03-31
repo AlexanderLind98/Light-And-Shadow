@@ -12,10 +12,6 @@ public class mat_marble : Material
         uniforms.Add("material.specular", new Vector3(0.1f, 0.1f, 0.1f));
         uniforms.Add("material.shininess", 10.0f);
         
-        uniforms.Add("light.ambient", new Vector3(1.0f, 1.0f, 1.0f));
-        uniforms.Add("light.diffuse", new Vector3(1.0f, 1.0f, 1.0f));
-        uniforms.Add("light.specular", new Vector3(1.0f, 1.0f, 1.0f));
-        
         UpdateUniforms();
     }
 }

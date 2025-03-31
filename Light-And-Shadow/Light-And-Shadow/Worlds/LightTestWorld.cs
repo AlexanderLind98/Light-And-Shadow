@@ -1,4 +1,6 @@
+using System.Drawing;
 using Light_And_Shadow.Behaviors;
+using Light_And_Shadow.Lights;
 using Light_And_Shadow.Materials;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -7,12 +9,17 @@ namespace Light_And_Shadow.Worlds;
 
 public class LightTestWorld : World
 {
+    private GameObject room;
     private GameObject staticCube;
     private GameObject rotatingCube;
 
     public LightTestWorld(Game game) : base(game)
     {
         WorldName = "Light Test World";
+
+        /*SkyColor = Color4.CornflowerBlue;
+        SunColor = Vector3.Zero;
+        DirectionalLight.LightColor = SunColor;*/
     }
 
     public override string DebugLabel
@@ -32,24 +39,33 @@ public class LightTestWorld : World
     protected override void ConstructWorld()
     {
         base.ConstructWorld();
+        
+        room = new GameObjectBuilder(Game)
+            .Model("Arches")
+            .Material(new mat_concrete())
+            .Position(0f, -2f, 0f)
+            .Scale(5, 5, 5)
+            .Build();
 
         staticCube = new GameObjectBuilder(Game)
-            .Model("Cube")
-            .Material(new mat_default())
+            .Model("SmoothCube")
+            .Material(new mat_chrome())
             .Position(-1.5f, 0f, 0f)
             .Build();
 
         rotatingCube = new GameObjectBuilder(Game)
             .Model("SmoothCube")
-            .Material(new mat_default())
+            .Material(new mat_gold())
             .Position(1.5f, 0f, 0f)
             .Behavior<RotateObjectBehavior>(Vector3.UnitX, 20f)
-            //.Behavior<RotateObjectBehavior>(Vector3.UnitY, 20f)
-            //.Behavior<RotateObjectBehavior>(Vector3.UnitZ, 20f)// weird specular light
             .Build();
 
+        GameObjects.Add(room);
         GameObjects.Add(staticCube);
         GameObjects.Add(rotatingCube);
+        
+        new SpotLight(this, Color4.White, 1f, 15.0f, 20.0f);
+        SpotLights[0].ToggleLight();
     }
 
     public override void HandleInput(KeyboardState input)
@@ -71,11 +87,11 @@ public class LightTestWorld : World
 
         if (input.IsKeyPressed(Keys.D4))
         {
-            staticCube.Renderer.Material = new mat_gold_simple();
+            /*staticCube.Renderer.Material = new mat_gold_simple();
             staticCube.Renderer.Material.UpdateUniforms();
 
             rotatingCube.Renderer.Material = new mat_gold_simple();
-            rotatingCube.Renderer.Material.UpdateUniforms();
+            rotatingCube.Renderer.Material.UpdateUniforms();*/
 
             Game.DebugMode = 0; // Full lighting
         }

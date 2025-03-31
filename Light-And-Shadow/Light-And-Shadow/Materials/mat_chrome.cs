@@ -12,10 +12,6 @@ public class mat_chrome : Material
         uniforms.Add("material.specular", new Vector3(0.774f, 0.774f, 0.774f));
         uniforms.Add("material.shininess", 76.8f);
         
-        uniforms.Add("light.ambient", new Vector3(1.0f, 1.0f, 1.0f));
-        uniforms.Add("light.diffuse", new Vector3(1.0f, 1.0f, 1.0f));
-        uniforms.Add("light.specular", new Vector3(1.0f, 1.0f, 1.0f));
-        
         UpdateUniforms();
     }
 }
