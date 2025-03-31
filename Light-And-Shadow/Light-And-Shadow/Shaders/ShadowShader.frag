@@ -237,11 +237,11 @@ void main()
     vec3 norm = normalize(fs_in.Normal);
     vec3 viewDir = normalize(viewPos - fs_in.FragPos);
 
-    // === SHADOW DEBUG START ===
-    float shadowDebug = ShadowCalculation(fs_in.FragPosLightSpace);
-    FragColor = vec4(vec3(1.0 - shadowDebug), 1.0); // White = light, Black = shadow
-    return;
-    // === SHADOW DEBUG END ===
+//    // === SHADOW DEBUG START ===
+//    float shadowDebug = ShadowCalculation(fs_in.FragPosLightSpace);
+//    FragColor = vec4(vec3(1.0 - shadowDebug), 1.0); // White = light, Black = shadow
+//    return;
+//    // === SHADOW DEBUG END ===
 
     vec3 result = CalcDirLight(dirLight, norm, viewDir);
 
@@ -261,26 +261,5 @@ void main()
         }
     }
 
-    //FragColor = vec4(result, 1.0f);
-
-//    vec3 projCoords = fs_in.FragPosLightSpace.xyz / fs_in.FragPosLightSpace.w;
-//    projCoords = projCoords * 0.5 + 0.5; // [0,1] space
-//
-//    FragColor = vec4(projCoords, 1.0); // R = X, G = Y, B = Z
-
-//    float shadow = 0.0;
-//    vec3 projCoords = fs_in.FragPosLightSpace.xyz / fs_in.FragPosLightSpace.w;
-//    projCoords = projCoords * 0.5 + 0.5;
-//
-//    float closestDepth = texture(shadowMap, projCoords.xy).r;
-//    float currentDepth = projCoords.z;
-//
-//    FragColor = vec4(vec3(closestDepth), 1.0); // eller currentDepth
-    
-// vec3 projCoords = fs_in.FragPosLightSpace.xyz / fs_in.FragPosLightSpace.w;
-////    projCoords = projCoords * 0.5 + 0.5;
-////    FragColor = vec4(vec3(projCoords.z), 1.0);
-//
-//    FragColor = vec4(projCoords.xy, 0.0, 1.0);
-
+    FragColor = vec4(result, 1.0f);
 }

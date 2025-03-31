@@ -35,10 +35,11 @@ public class ShadowWorld : World
         // GameObjects.Add(staticCube);
         // GameObjects.Add(rotatingCube);
         
-        DirectionalLight.LightColor = Vector3.Zero;
+        DirectionalLight.LightColor = Vector3.One;
         
         var monkey = new GameObjectBuilder(Game)
             .Model("Monkey")
+            //.Material(new mat_gold_simple()) 
             .Material(new mat_gold()) 
             .Position(0f, 0f, 0f)
             .Behavior<RotateObjectBehavior>(Vector3.UnitY, 10f)
