@@ -1,4 +1,5 @@
 using Light_And_Shadow.Behaviors;
+using Light_And_Shadow.Lights;
 using Light_And_Shadow.Materials;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -7,7 +8,12 @@ namespace Light_And_Shadow.Worlds;
 
 public class ShadowWorld : World
 {
-    public ShadowWorld(Game game) : base(game) {  }
+    public ShadowWorld(Game game) : base(game)
+    {
+
+
+
+    }
     
     private GameObject staticCube;
     private GameObject rotatingCube;
@@ -18,34 +24,45 @@ public class ShadowWorld : World
 
         // staticCube = new GameObjectBuilder(Game)
         //     .Model("GroundFloor")
-        //     .Material(new mat_gold())
+        //     .Material(new mat_gold_simple())
         //     .Position(0f, -1f, 0f)
         //     .Scale(5, 1, 5)
         //     .Build();
-        //
-        // // GameObjects.Add(GameObjectFactory.CreateCube(Game));
-        //
-        // rotatingCube = new GameObjectBuilder(Game)
-        //     .Model("SmoothCube")
-        //     .Material(new mat_marble())
-        //     .Position(1.5f, 0f, 0f)
-        //     .Behavior<RotateObjectBehavior>(Vector3.UnitX, 20f)
-        //     .Build();
-        //
-        // GameObjects.Add(staticCube);
-        // GameObjects.Add(rotatingCube);
         
-        DirectionalLight.LightColor = Vector3.One;
+        // GameObjects.Add(GameObjectFactory.CreateCube(Game));
+        
+        rotatingCube = new GameObjectBuilder(Game)
+            .Model("SmoothCube")
+            .Material(new mat_gold_simple())
+            .Position(0f, 0.5f, -5)
+            //.Behavior<RotateObjectBehavior>(Vector3.UnitX, 20f)
+            .Scale(5f, 5f, 1f)
+            .Build();
+        
+       // GameObjects.Add(staticCube);
+        GameObjects.Add(rotatingCube);
+        
+ 
         
         var monkey = new GameObjectBuilder(Game)
             .Model("Monkey")
             //.Material(new mat_gold_simple()) 
             .Material(new mat_gold()) 
             .Position(0f, 0f, 0f)
-            .Behavior<RotateObjectBehavior>(Vector3.UnitY, 10f)
+            //.Behavior<RotateObjectBehavior>(Vector3.UnitY, 10f)
             .Build();
 
         GameObjects.Add(monkey);
+        
+        var ground = new GameObjectBuilder(Game)
+            .Model("GroundFloor")
+            .Material(new mat_gold())
+            .Position(0f, -1f, 0f)
+            .Scale(5, 1, 5)
+            .Build();
+
+        GameObjects.Add(ground);
+
     }
     
     public override void HandleInput(KeyboardState input)
@@ -62,5 +79,4 @@ public class ShadowWorld : World
         DirectionalLight.Transform.Rotation = SunDirection;
         DirectionalLight.UpdateVisualizer(this);
     }
-
 }

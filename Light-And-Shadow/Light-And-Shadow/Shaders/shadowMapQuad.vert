@@ -1,5 +1,3 @@
-// === Shadow Map Debug Shader ===
-// Shows shadow map as grayscale in bottom-left of screen
 
 // Vertex Shader: shadowMapQuad.vert
 #version 460 core
@@ -12,6 +10,6 @@ uniform mat4 mvp;
 
 void main()
 {
-    gl_Position = vec4(aPos, 1.0) * mvp;
     TexCoords = aTexCoords;
+    gl_Position = vec4(aPos, 1.0) * mvp;       
 }

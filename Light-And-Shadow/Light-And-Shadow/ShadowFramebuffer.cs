@@ -71,7 +71,17 @@ public class ShadowFramebuffer
         simpleDepthShader.SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
     }
 
-
+    public void ConfigureShaderFromPositionAndDirection(Vector3 lightPos, Vector3 lightDir)
+    {
+        Vector3 sceneCenter = lightPos + lightDir;
+        Matrix4 lightView = Matrix4.LookAt(lightPos, sceneCenter, Vector3.UnitY);
+        Matrix4 lightProjection = Matrix4.CreateOrthographic(20f, 20f, 0.1f, 50f);
+    
+        lightSpaceMatrix = lightProjection * lightView;
+    
+        simpleDepthShader.Use();
+        simpleDepthShader.SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
+    }
 
     public void Dispose()
     {

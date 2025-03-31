@@ -8,6 +8,8 @@ namespace Light_And_Shadow.Components
 {
     public class Renderer
     {
+        public bool DepthTest = true;
+        
         private Material _material;
         public Material Material
         {
@@ -122,5 +124,20 @@ namespace Light_And_Shadow.Components
             Material.SetUniform("dirLight.diffuse", currentWorld.DirectionalLight.LightColor);
             Material.SetUniform("dirLight.specular", currentWorld.DirectionalLight.LightColor);
         }
+        
+        /// <summary>
+        /// Tegner objektet til depth buffer med korrekt depth mask og model matrix.
+        /// </summary>
+        public void RenderDepth(Shader depthShader, in Matrix4 model)
+        {
+            depthShader.SetMatrix("model", model);
+            GL.DepthMask(DepthTest);
+
+            if (Mesh != null)
+                Mesh.Draw();
+
+            GL.DepthMask(true);
+        }
+
     }
 }

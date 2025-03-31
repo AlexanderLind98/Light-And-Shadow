@@ -6,6 +6,7 @@ namespace Light_And_Shadow.Materials;
 public class mat_gold : Material
 {
     public mat_gold() 
+        : base("Shaders/shade.vert", "Shaders/shade.frag")
     {
         uniforms.Add("material.ambient", new Vector3(0.25f, 0.2f, 0.0745f));
         uniforms.Add("material.diffuse", new Vector3(0.75f, 0.6f, 0.2f));

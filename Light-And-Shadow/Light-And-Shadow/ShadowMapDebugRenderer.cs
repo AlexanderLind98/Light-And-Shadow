@@ -1,4 +1,4 @@
-// === FILNAVN: ShadowMapDebugRenderer.cs ===
+// ShadowMapDebugRenderer.cs 
 
 using Light_And_Shadow.Components;
 using Light_And_Shadow.Materials;
@@ -45,8 +45,9 @@ public class ShadowMapDebugRenderer
         GL.BindTexture(TextureTarget.Texture2D, depthMapTextureHandle);
 
         Matrix4 model = _quad.Transform.CalculateModel();
-        Matrix4 mvp = model;
-
+        Matrix4 projection = Matrix4.CreateOrthographic(2f, 2f, -1f, 1f); // klip space (-1 til 1)
+        Matrix4 mvp = model * projection;
+        //Matrix4 mvp = projection * model;
 
         _material.UseShader();
         _material.SetUniform("mvp", mvp);

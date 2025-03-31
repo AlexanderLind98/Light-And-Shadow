@@ -48,4 +48,10 @@ public class DirectionalLight : Light
     {
         if (Visualizer != null) Visualizer.Transform.Rotation = Transform.Rotation;
     }
+    
+    public Vector3 ConvertDirection(Vector3 direction)
+    {
+        return base.ConvertDirection(direction);
+    }
+
 }

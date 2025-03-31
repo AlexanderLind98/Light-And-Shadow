@@ -89,10 +89,9 @@ namespace Light_And_Shadow
             Matrix4 model = Transform.CalculateModel();
             
             depthShader.Use();
-            depthShader.SetMatrix("model", model);
             depthShader.SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
             
-            Renderer.Mesh.Draw();
+            Renderer.RenderDepth(depthShader, model);
         }
         
         public void Dispose()

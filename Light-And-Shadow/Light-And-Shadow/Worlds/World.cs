@@ -16,6 +16,8 @@ public abstract class World
     public string WorldName { get; set; }
 
     private Camera camera;
+    public Camera ActiveCamera => camera;
+
 
     public Vector3 SunDirection = new Vector3(-0.2f, -1.0f, -0.3f); //Set default sun direction;
     public Vector3 SunColor = new Vector3(2f, 2f, 1.8f); //Set default sun direction;
