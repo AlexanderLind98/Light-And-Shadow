@@ -118,7 +118,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     
     // combine results
     vec3 ambient  = light.ambient  * material.ambient;
-    vec3 diffuse = light.diffuse * (diff * material.diffuse);
+    vec3 diffuse = light.diffuse * diff * material.diffuse;
     vec3 specular = light.specular * SpecResult(lightDir, viewDir, normal);
     
     vec3 texColor = vec3(1.0f);
@@ -156,6 +156,17 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     diffuse  *= attenuation;
     specular *= attenuation;
 
+    vec3 texColor = vec3(1.0f);
+
+    if(texture(material.diffTex, texCoord).a > 0.0f)
+    {
+        texColor = texture(material.diffTex, texCoord).rgb;
+
+        ambient *= texColor;
+        diffuse *= texColor;
+        specular *= texColor;
+    }
+
     return BlinnPhongResult(ambient, diffuse, specular);
 }
 
@@ -184,6 +195,17 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     ambient *= attenuation;
     diffuse *= intensity;
     specular *= intensity;
+
+    vec3 texColor = vec3(1.0f);
+
+    if(texture(material.diffTex, texCoord).a > 0.0f)
+    {
+        texColor = texture(material.diffTex, texCoord).rgb;
+
+        ambient *= texColor;
+        diffuse *= texColor;
+        specular *= texColor;
+    }
 
     // Final lighting based on debug mode
     vec3 result = BlinnPhongResult(ambient, diffuse, specular);
