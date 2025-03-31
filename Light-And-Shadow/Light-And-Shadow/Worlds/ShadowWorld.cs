@@ -7,7 +7,7 @@ namespace Light_And_Shadow.Worlds;
 
 public class ShadowWorld : World
 {
-    public ShadowWorld(Game game) : base(game) { }
+    public ShadowWorld(Game game) : base(game) {  }
     
     private GameObject staticCube;
     private GameObject rotatingCube;
@@ -39,7 +39,7 @@ public class ShadowWorld : World
         
         var monkey = new GameObjectBuilder(Game)
             .Model("Monkey")
-            .Material(new mat_gold_simple()) 
+            .Material(new mat_gold()) 
             .Position(0f, 0f, 0f)
             .Behavior<RotateObjectBehavior>(Vector3.UnitY, 10f)
             .Build();

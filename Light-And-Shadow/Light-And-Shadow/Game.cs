@@ -96,7 +96,7 @@ namespace Light_And_Shadow
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, shadowFramebuffer.depthMapFBO);
             GL.Clear(ClearBufferMask.DepthBufferBit);
             Vector3 monkeyFrontLightDir = new Vector3(0f, 0f, -1f); // Lys peger mod monkey langs -Z
-            shadowFramebuffer.ConfigureShaderFromDirection(monkeyFrontLightDir);
+            shadowFramebuffer.ConfigureShaderFromDirection(currentWorld.DirectionalLight.Transform.Rotation);
         
             //Render depth map from scene
             currentWorld.RenderShadowMap(shadowFramebuffer.lightSpaceMatrix, shadowFramebuffer.simpleDepthShader);
@@ -106,7 +106,7 @@ namespace Light_And_Shadow
             // Render scene as normal using the shadow map
             GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            shadowFramebuffer.ConfigureShaderFromDirection(monkeyFrontLightDir);
+            shadowFramebuffer.ConfigureShaderFromDirection(currentWorld.DirectionalLight.Transform.Rotation);
             
             GL.ActiveTexture(TextureUnit.Texture1);
             GL.BindTexture(TextureTarget.Texture2D, shadowFramebuffer.depthMap);

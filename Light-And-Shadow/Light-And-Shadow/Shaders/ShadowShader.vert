@@ -14,14 +14,15 @@ out VS_Out
 
 uniform mat4 mvp;
 uniform mat4 model;
-//uniform mat4 normalMatrix;  // To correctly transform normals to world space
+uniform mat4 normalMatrix;  // To correctly transform normals to world space
 uniform mat4 lightSpaceMatrix;
 
 void main()
 {
-    vs_out.FragPos = vec3(model * vec4(aPos, 1.0));
+    vs_out.FragPos = vec3(vec4(aPos, 1.0) * model);
 //    vs_out.FragPos = vec3(vec4(aPos, 1.0) * model);
-    vs_out.Normal = inverse(mat3(model)) * aNormal;
+//    vs_out.Normal = inverse(mat3(model)) * aNormal;
+    vs_out.Normal = normalize(mat3(normalMatrix) * aNormal);;
     vs_out.TexCoords = aTexCoord;
     vs_out.FragPosLightSpace = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);
     
