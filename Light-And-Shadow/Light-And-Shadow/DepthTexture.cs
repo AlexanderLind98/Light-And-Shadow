@@ -24,7 +24,7 @@ public class DepthTexture : Texture
         GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
     }
 
-    public override void Use(TextureUnit unit = 0)
+    public override void Use(TextureUnit unit = TextureUnit.Texture0)
     {
         GL.ActiveTexture(unit);
         GL.BindTexture(TextureTarget.Texture2D, handle);

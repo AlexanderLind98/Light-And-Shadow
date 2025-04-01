@@ -56,7 +56,7 @@ namespace Light_And_Shadow
         /// <summary>
         /// Binds this texture to the specified texture unit (defaults to TextureUnit 0).
         /// </summary>
-        public virtual void Use(TextureUnit unit = 0)
+        public virtual void Use(TextureUnit unit = TextureUnit.Texture0)
         {
             GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, handle);
