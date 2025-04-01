@@ -14,7 +14,7 @@ namespace Light_And_Shadow.Components
             Mesh = mesh;
         }
 
-        public void Draw(Matrix4 mvp, Matrix4 model, Vector3 cameraPosition, int currentDebugMode)
+        public void Draw(Matrix4 mvp, Matrix4 model, Vector3 cameraPosition, int currentDebugMode, Matrix4 lightSpaceMatrix, Texture shadowMap)
         {
             Material.UseShader();
             Material.SetUniform("mvp", mvp);
@@ -28,7 +28,9 @@ namespace Light_And_Shadow.Components
             Material.SetUniform("specularStrength", 10.0f);
             Material.SetUniform("debugMode", currentDebugMode); 
 
-
+            // shadow
+            Material.SetUniform("lightSpaceMatrix", lightSpaceMatrix);
+            Material.SetUniform("shadowMap", shadowMap); 
             
             Mesh.Draw();
         }

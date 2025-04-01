@@ -13,6 +13,20 @@ namespace Light_And_Shadow
 {
     public class Game : GameWindow
     {
+        // shadow
+        private int depthMapFBO;
+        private int shadowMap;
+        private Shader depthShader;
+        private Matrix4 lightSpaceMatrix;
+        //private Vector3 lightPos = new Vector3(0.0f, 2.0f, -3.0f);
+        private Vector3 lightPos = new Vector3(4, 10, 4);
+        private Texture shadowTexture;
+
+        // shadow debug
+        private Shader debugShader;
+        private Mesh quadMesh;
+
+        
         private int debugMode = 0;
  
         private List<GameObject> gameObjects = new List<GameObject>();
@@ -30,23 +44,55 @@ namespace Light_And_Shadow
             base.OnLoad();
             GL.Enable(EnableCap.DepthTest);
 
-            // Load game objects from factory.
-            gameObjects.Add(GameObjectFactory.CreateTriangle(this));
-            // gameObjects.Add(GameObjectFactory.CreateCube(this));
-            //gameObjects.Add(GameObjectFactory.CreateObjModel(this));
+            SetupFrameBuffer();
+
+            SetupDebugQuad();
 
             lightTest();
 
             SetupCamera();
         }
 
+        private void SetupDebugQuad()
+        {
+            debugShader = new Shader("Shaders/shadowDebugQuad.vert", "Shaders/shadowDebugQuad.frag");
+            quadMesh = new QuadMesh();
+        }
+
+        private void SetupFrameBuffer()
+        {
+            depthShader = new Shader("Shaders/shadowDepth.vert", "Shaders/shadowDepth.frag");
+            
+            depthMapFBO = GL.GenFramebuffer();
+
+            // Opret depth texture
+            shadowMap = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, shadowMap);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.DepthComponent,
+                1024, 1024, 0, PixelFormat.DepthComponent, PixelType.Float, IntPtr.Zero);
+
+            // Konfigurer texture parametre
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToBorder);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToBorder);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBorderColor, new float[] { 1, 1, 1, 1 });
+
+            // Bind til framebuffer
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, depthMapFBO);
+            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, TextureTarget.Texture2D, shadowMap, 0);
+            GL.DrawBuffer(DrawBufferMode.None);
+            GL.ReadBuffer(ReadBufferMode.None);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            
+            shadowTexture = new Texture(shadowMap);
+        }
+
         private void lightTest()
         {
-            Material cubeMaterial = new Material("Shaders/specularLightShader.vert", "Shaders/specularLightShader.frag");
-            //Material cubeMaterial = new Material("Shaders/diffuseLightShader.vert", "Shaders/diffuseLightShader.frag");
-            //Material cubeMaterial = new Material("Shaders/ambientLightShader.vert", "Shaders/ambientLightShader.frag");
-            //Material cubeMaterial = new Material("Shaders/shader.vert", "Shaders/shader.frag");
-            Renderer cubeRenderer = new Renderer(cubeMaterial, new CubeMesh());
+            Material sharedMaterial = new Material("Shaders/shadow.vert", "Shaders/shadow.frag");
+          
+            Renderer cubeRenderer = new Renderer(sharedMaterial, new CubeMesh());
             GameObject cubeObject = new GameObject(this)
             {
                 Renderer = cubeRenderer,
@@ -58,6 +104,35 @@ namespace Light_And_Shadow
             };
             cubeObject.AddComponent<MoveObjectBehaviour>();
             gameObjects.Add(cubeObject);
+            
+            // Gulv
+            Renderer floorRenderer = new Renderer(sharedMaterial, new CubeMesh());
+            GameObject floor = new GameObject(this)
+            {
+                Renderer = floorRenderer,
+                Transform =
+                {
+                    Position = new Vector3(0.0f, -4.0f, 0.0f),
+                    Scale = new Vector3(10.0f, 0.5f, 10.0f)
+                }
+            };
+            gameObjects.Add(floor);
+
+            // Ekstra statiske kuber
+            for (int i = 0; i < 3; i++)
+            {
+                Renderer r = new Renderer(sharedMaterial, new CubeMesh());
+                GameObject staticCube = new GameObject(this)
+                {
+                    Renderer = r,
+                    Transform =
+                    {
+                        Position = new Vector3(i * 2.5f - 2.5f, -3.0f, -3.0f),
+                        Scale = new Vector3(1.0f)
+                    }
+                };
+                gameObjects.Add(staticCube);
+            }
         }
 
         /// <summary>
@@ -67,7 +142,7 @@ namespace Light_And_Shadow
         {
             GameObject cameraObject = new GameObject(this);
             cameraObject.AddComponent<Camera>(60.0f, (float)Size.X, (float)Size.Y, 0.3f, 1000.0f);
-            //cameraObject.AddComponent<CamMoveBehavior>();
+            cameraObject.AddComponent<CamMoveBehavior>();
             camera = cameraObject.GetComponent<Camera>();
             gameObjects.Add(cameraObject);
 
@@ -112,16 +187,76 @@ namespace Light_And_Shadow
             base.OnRenderFrame(args);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+            RenderShadows();
+
+            RenderDebugQuad();
+
             Matrix4 viewProjection = camera.GetViewProjection();
             Vector3 cameraPos = camera.Position;
+            
             foreach (var obj in gameObjects)
             {
-                obj.Draw(viewProjection, cameraPos, debugMode);
+                obj.Draw(viewProjection, cameraPos, debugMode, lightSpaceMatrix, shadowTexture);
             }
-
             
             SwapBuffers();
         }
+
+        private void RenderDebugQuad()
+        {
+            // Gem eksisterende viewport
+            int[] fullViewport = new int[4];
+            GL.GetInteger(GetPName.Viewport, fullViewport);
+
+            // Sæt viewport til 1/4 skærmstørrelse (nederste venstre hjørne)
+            GL.Viewport(0, 0, Size.X / 4, Size.Y / 4);
+
+            debugShader.Use();
+            debugShader.SetInt("depthMap", 0);
+            shadowTexture.Use(); // binder shadowMap til Texture0
+            quadMesh.Draw();
+
+            // Gendan viewport til fuld skærm
+            GL.Viewport(fullViewport[0], fullViewport[1], fullViewport[2], fullViewport[3]);
+        }
+
+
+        private void RenderShadows()
+        {
+            // Gem den nuværende viewport
+            int[] viewport = new int[4];
+            GL.GetInteger(GetPName.Viewport, viewport);
+
+            // Light space matrix
+            Matrix4 lightView = Matrix4.LookAt(lightPos, Vector3.Zero, Vector3.UnitY);
+            Matrix4 lightProjection = Matrix4.CreateOrthographic(50, 50, 1, 100);
+            lightSpaceMatrix = lightView * lightProjection;
+            //lightSpaceMatrix = lightProjection * lightView;
+
+
+            GL.Viewport(0, 0, 1024, 1024);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, depthMapFBO);
+            GL.Clear(ClearBufferMask.DepthBufferBit);
+
+            depthShader.Use();
+            depthShader.SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
+
+            foreach (var obj in gameObjects)
+            {
+                if (obj.Renderer != null)
+                {
+                    var model = obj.Transform.CalculateModel();
+                    depthShader.SetMatrix("model", model);
+                    obj.Renderer.Mesh.Draw();
+                }
+            }
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+
+            // Gendan viewport
+            GL.Viewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+        }
+
 
         protected override void OnUnload()
         {

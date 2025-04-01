@@ -56,5 +56,11 @@ namespace Light_And_Shadow
             GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, handle);
         }
+        
+        public Texture(int existingHandle)
+        {
+            handle = existingHandle;
+        }
+
     }
 }

@@ -40,6 +40,7 @@ namespace Light_And_Shadow
             Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(FOV), aspectX / aspectY, near, far);
 
             return view * projection;
+            //return projection * view;
         }
 
     }
