@@ -42,8 +42,8 @@ public class LightTestWorld : World
         base.ConstructWorld();
         
         room = new GameObjectBuilder(Game)
-            .Model("Arches")
-            .Material(new mat_box())
+            .Model("Ground")
+            .Material(new mat_marble())
             .Position(0f, -2f, 0f)
             .Build();
         
@@ -67,13 +67,13 @@ public class LightTestWorld : World
             .Behavior<RotateObjectBehavior>(Vector3.UnitX, 1f)
             .Build();
 
-        // GameObjects.Add(room);
+        GameObjects.Add(room);
         GameObjects.Add(statue);
         GameObjects.Add(staticCube);
         GameObjects.Add(rotatingCube);
         
         new SpotLight(this, Color4.White, 1f, 15.0f, 20.0f);
-        // SpotLights[0].ToggleLight();
+        SpotLights[0].ToggleLight();
     }
 
     public override void HandleInput(KeyboardState input)
