@@ -5,7 +5,7 @@ namespace Light_And_Shadow
 {
     public class Texture
     {
-        private int handle;
+        protected int handle;
 
         public Texture(string path)
         {
@@ -48,10 +48,15 @@ namespace Light_And_Shadow
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
         }
 
+        protected Texture()
+        {
+            
+        }
+
         /// <summary>
         /// Binds this texture to the specified texture unit (defaults to TextureUnit 0).
         /// </summary>
-        public void Use(TextureUnit unit = TextureUnit.Texture0)
+        public virtual void Use(TextureUnit unit = 0)
         {
             GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, handle);

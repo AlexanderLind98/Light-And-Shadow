@@ -25,6 +25,10 @@ public abstract class World
     public List<PointLight> PointLights = new();
     public List<SpotLight> SpotLights = new();
 
+    private Shader dir_depthShader;
+    private int dir_depthMapFBO;
+    public DepthTexture depthMap;
+
     protected World(Game game)
     {
         Game = game;
@@ -33,6 +37,7 @@ public abstract class World
         //Basic Sun
         DirectionalLight = new DirectionalLight(this, Color4.LightYellow, 1);
         DirectionalLight.Transform.Rotation = SunDirection;
+        DirectionalLight.Transform.Position = new Vector3(2, 5, -2);
         DirectionalLight.UpdateVisualizer(this);
     }
 
@@ -56,8 +61,17 @@ public abstract class World
     public void LoadWorld()
     {
         GL.Enable(EnableCap.DepthTest);
-        ConstructWorld();
         GL.ClearColor(SkyColor);
+
+        //Depth shader
+        dir_depthShader = new Shader("Shaders/DirDepth.vert", "Shaders/DirDepth.frag");
+        dir_depthMapFBO = GL.GenTexture();
+        depthMap = new DepthTexture(dir_depthMapFBO, 1024, 1024);
+        
+        GL.Enable(EnableCap.DepthTest);
+        GL.Enable(EnableCap.CullFace);
+        
+        ConstructWorld();
     }
 
     public void UpdateWorld(FrameEventArgs args)
@@ -70,6 +84,29 @@ public abstract class World
 
     public void DrawWorld(FrameEventArgs args, int debugMode)
     {
+        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+        GL.CullFace(TriangleFace.Front);
+        
+        Matrix4 lightProjection = Matrix4.CreateOrthographicOffCenter(-10.0f, 10.0f, -10, 10, 0.1f, 10.0f);
+        Matrix4 lightView = Matrix4.LookAt(new Vector3(DirectionalLight.Transform.Position),
+            new Vector3(DirectionalLight.Transform.Position + DirectionalLight.Transform.Rotation),
+            new Vector3(0.0f, 1.0f, 0.0f));
+        Matrix4 lightSpaceMatrix = lightView * lightProjection;
+        
+        depthMap.Use(TextureUnit.Texture0);
+        dir_depthShader.Use();
+        dir_depthShader.SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
+        
+        GL.Viewport(0, 0, 1024, 1024);
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, dir_depthMapFBO);
+        GL.Clear(ClearBufferMask.DepthBufferBit);
+        
+        GameObjects.ForEach(x => x.RenderDepth(dir_depthShader));
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+        
+        // reset viewport
+        GL.CullFace(TriangleFace.Back);
+        GL.Viewport(0, 0, Game.Size.X, Game.Size.Y);
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
         Matrix4 viewProjection = camera.GetViewProjection();
@@ -100,6 +137,8 @@ public abstract class World
         {
             obj.Dispose();
         }
+        
+        dir_depthShader.Dispose();
 
         GameObjects.Clear();
     }

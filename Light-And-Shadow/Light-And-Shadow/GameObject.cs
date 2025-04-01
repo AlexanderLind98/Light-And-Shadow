@@ -82,6 +82,17 @@ namespace Light_And_Shadow
             }
         }
         
+        public void RenderDepth(Shader shader)
+        {
+            if (Renderer != null)
+            {
+                // Calculate the model matrix.
+                Matrix4 model = Transform.CalculateModel();
+                
+                Renderer.RenderDepth(shader, model);
+            }
+        }
+        
         public void Dispose()
         {
             Renderer?.Mesh?.Dispose();

@@ -18,9 +18,9 @@ public class LightTestWorld : World
     {
         WorldName = "Light Test World";
 
-        /*SkyColor = Color4.CornflowerBlue;
-        SunColor = Vector3.Zero;
-        DirectionalLight.LightColor = SunColor;*/
+        SkyColor = Color4.CornflowerBlue;
+        // SunColor = Vector3.Zero;
+        // DirectionalLight.LightColor = SunColor;
     }
 
     public override string DebugLabel
@@ -67,7 +67,7 @@ public class LightTestWorld : World
             .Behavior<RotateObjectBehavior>(Vector3.UnitX, 1f)
             .Build();
 
-        GameObjects.Add(room);
+        // GameObjects.Add(room);
         GameObjects.Add(statue);
         GameObjects.Add(staticCube);
         GameObjects.Add(rotatingCube);
