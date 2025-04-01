@@ -74,10 +74,11 @@ namespace Light_And_Shadow
                 Matrix4 model = Transform.CalculateModel();
                 
                 // Calculate the Model-View-Projection matrix.
-                Matrix4 mvp = model * viewProjection;
+                //Matrix4 mvp = model * viewProjection;
+                //Matrix4 mvp = viewProjection * model;
                 
                 // Draw the object.
-                Renderer.Draw(mvp, model, cameraPosition, debugMode, lightSpaceMatrix, shadowMap);
+                Renderer.Draw(model, viewProjection, cameraPosition, debugMode, lightSpaceMatrix, shadowMap);
 
             }
         }

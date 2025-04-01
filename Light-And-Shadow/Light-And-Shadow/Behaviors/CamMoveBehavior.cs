@@ -12,7 +12,7 @@ public class CamMoveBehavior(GameObject gameObject, Game window) : Behaviour(gam
     private Vector3 front = new Vector3(0.0f, 0.0f, -1.0f);
     private Vector3 up = new Vector3(0.0f, 1.0f, 0.0f);
     private float speed = 10.0f;
-    private float sensitivity = 10.0f;
+    private float sensitivity = 5.0f;
     private readonly Camera cameraComponent = gameObject.GetComponent<Camera>();
 
     public override void Update(FrameEventArgs args)

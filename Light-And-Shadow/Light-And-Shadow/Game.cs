@@ -19,7 +19,12 @@ namespace Light_And_Shadow
         private Shader depthShader;
         private Matrix4 lightSpaceMatrix;
         //private Vector3 lightPos = new Vector3(0.0f, 2.0f, -3.0f);
-        private Vector3 lightPos = new Vector3(4, 10, 4);
+        // private Vector3 lightPos = new Vector3(-8, 5, 0);
+        // Vector3 lightDir = new Vector3(1f, -0.5f, 0f);
+        private Vector3 lightPos;
+        private Vector3 lightDir;
+        
+
         private Texture shadowTexture;
 
         // shadow debug
@@ -43,6 +48,9 @@ namespace Light_And_Shadow
         {
             base.OnLoad();
             GL.Enable(EnableCap.DepthTest);
+            lightPos = new Vector3(0.0f, 5.0f, 5.0f);      // just above camera spawn
+            lightDir = new Vector3(0.0f, -0.5f, -1.0f).Normalized(); // down and forward
+
 
             SetupFrameBuffer();
 
@@ -91,6 +99,18 @@ namespace Light_And_Shadow
         private void lightTest()
         {
             Material sharedMaterial = new Material("Shaders/shadow.vert", "Shaders/shadow.frag");
+            
+            // var lightCube = new GameObject(this)
+            // {
+            //     Renderer = new Renderer(new Material("Shaders/OLD/ambientLightShader.vert", "Shaders/OLD/ambientLightShader.frag"), new CubeMesh()),
+            //     Transform = 
+            //     {
+            //         Position = lightPos,
+            //         Scale = new Vector3(0.2f)
+            //     }
+            // };
+            // gameObjects.Add(lightCube);
+
           
             Renderer cubeRenderer = new Renderer(sharedMaterial, new CubeMesh());
             GameObject cubeObject = new GameObject(this)
@@ -100,6 +120,7 @@ namespace Light_And_Shadow
                 {
                     // position a bit below middle closer to camera
                     Position = new Vector3(0.0f, -2.0f, 1.0f),
+                    Scale = new Vector3(1.0f)
                 }
             };
             cubeObject.AddComponent<MoveObjectBehaviour>();
@@ -227,12 +248,20 @@ namespace Light_And_Shadow
             int[] viewport = new int[4];
             GL.GetInteger(GetPName.Viewport, viewport);
 
-            // Light space matrix
-            Matrix4 lightView = Matrix4.LookAt(lightPos, Vector3.Zero, Vector3.UnitY);
-            Matrix4 lightProjection = Matrix4.CreateOrthographic(50, 50, 1, 100);
-            lightSpaceMatrix = lightView * lightProjection;
-            //lightSpaceMatrix = lightProjection * lightView;
+            // Opret view-matrix for lyset, Lyset placeres i 'lightPos' og kigger i retning af 'lightDir'.
+            Matrix4 lightView = Matrix4.LookAt(
+                lightPos,
+                lightPos + lightDir,
+                Vector3.UnitY);
 
+            // Opret en orthografisk projektionsmatrix til shadow mapping.
+            Matrix4 lightProjection = Matrix4.CreateOrthographicOffCenter(
+                -10.0f, 10.0f,   // venstre/højre
+                -10.0f, 10.0f,   // bund/top
+                1.0f, 50.0f);    // nær/fjern klippeafstande
+
+            // Kombinér view og lysprojection til lys space, brugt til at beregne skygger.
+            lightSpaceMatrix = lightView * lightProjection;
 
             GL.Viewport(0, 0, 1024, 1024);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, depthMapFBO);

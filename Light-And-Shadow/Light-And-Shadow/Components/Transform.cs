@@ -7,6 +7,10 @@ namespace OpenTK_OBJ
     /// </summary>
     public class Transform
     {
+        private Matrix4 _transformMatrix;
+        public Matrix4 TransformMatrix => _transformMatrix;
+
+
         /// <summary>
         /// Gets or sets the position.
         /// </summary>
@@ -34,8 +38,10 @@ namespace OpenTK_OBJ
             Matrix4 rotationZ = Matrix4.CreateRotationZ(Rotation.Z);
             Matrix4 scale = Matrix4.CreateScale(Scale);
 
-            // Adjust the multiplication order if needed for your specific transformation pipeline.
-            return scale * rotationZ * rotationY * rotationX * translation;
+            // korigeret for rotation rækkefølge
+            _transformMatrix = scale * rotationX * rotationY * rotationZ * translation;
+            return _transformMatrix;
         }
+
     }
 }

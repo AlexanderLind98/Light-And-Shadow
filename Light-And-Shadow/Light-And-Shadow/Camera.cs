@@ -1,8 +1,6 @@
 ﻿using Light_And_Shadow.Behaviors;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Common.Input;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Light_And_Shadow
 {
@@ -34,14 +32,24 @@ namespace Light_And_Shadow
         { 
             //Movement moved -> CamMoveBehavior.cs
         }
+        
         public Matrix4 GetViewProjection()
         {
-            Matrix4 view = Matrix4.LookAt(gameObject.Transform.Position, gameObject.Transform.Position + Front, Up);
-            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(FOV), aspectX / aspectY, near, far);
+            // Opret view-matrix ud fra kameraets position og retning.
+            Matrix4 view = Matrix4.LookAt(
+                gameObject.Transform.Position,
+                gameObject.Transform.Position + Front,
+                Up);
 
+            // Opret en perspektiv-projektionsmatrix baseret på FOV, aspect ratio og clipping planes.
+            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(
+                MathHelper.DegreesToRadians(FOV),
+                aspectX / aspectY,
+                near,
+                far);
+
+            // Returnér kombineret view * projection matrix.
             return view * projection;
-            //return projection * view;
         }
-
     }
 }
