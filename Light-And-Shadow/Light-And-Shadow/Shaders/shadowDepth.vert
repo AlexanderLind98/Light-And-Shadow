@@ -7,11 +7,7 @@ uniform mat4 lightSpaceMatrix;
 
 void main()
 {
-    // Transformér vertex-position fra objektets lokale rum til lysets clip-space.
-    // Bruges i første render-pass til at gemme dybdeinformation i shadow map.
-    //
-    // Rækkefølgen matcher CPU-side matrixopbygning:
-    // projection * view * model → uploadet med transpose=true →
-    // derfor kan vi skrive det som vec4 * model * lightSpaceMatrix.
+    // Transformer vertex-position fra objektets lokale rum til lysets clip-space.
+    // Bruges i foerste render-pass til at gemme dybdeinformation i shadow map.
     gl_Position = vec4(aPos, 1.0) * model * lightSpaceMatrix;
 }

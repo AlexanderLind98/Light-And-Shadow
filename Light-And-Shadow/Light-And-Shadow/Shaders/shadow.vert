@@ -25,8 +25,6 @@ void main()
     FragPosLightSpace = vec4(FragPos, 1.0) * lightSpaceMatrix;
 
     // Beregn endelig position i clip-space: model * viewProjection * vertex.
-    // Rækkefølgen svarer til CPU-siden, hvor vi bygger matricer som 'projection * view * model',
-    // men da vi uploader med transpose=true, gør vi det fra venstre mod højre her.
     gl_Position = vec4(aPos, 1.0) * model * viewProjection;
 }
 
