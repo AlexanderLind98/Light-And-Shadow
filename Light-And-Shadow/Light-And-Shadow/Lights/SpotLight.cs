@@ -28,6 +28,8 @@ public class SpotLight : Light
         LightIntensity = intensity;
         LightColor = new Vector3(color.R * LightIntensity, color.G* LightIntensity, color.B* LightIntensity);
         DefaultColor = LightColor;
+        InnerRadius = innerRadius;
+        OuterRadius = outerRadius;
         
         CreateVisualizer(currentWorld);
     }
@@ -45,6 +47,8 @@ public class SpotLight : Light
         LightIntensity = intensity;
         LightColor = new Vector3(color.R * LightIntensity, color.G* LightIntensity, color.B* LightIntensity);
         DefaultColor = LightColor;
+        InnerRadius = innerRadius;
+        OuterRadius = outerRadius;
         
         CreateVisualizer(currentWorld);
     }
@@ -57,6 +61,8 @@ public class SpotLight : Light
         LightIntensity = intensity;
         LightColor = new Vector3(color.R * LightIntensity, color.G* LightIntensity, color.B* LightIntensity);
         DefaultColor = LightColor;
+        InnerRadius = innerRadius;
+        OuterRadius = outerRadius;
         
         CreateVisualizer(currentWorld);
     }

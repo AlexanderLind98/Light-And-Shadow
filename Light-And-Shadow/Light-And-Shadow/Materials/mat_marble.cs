@@ -7,14 +7,12 @@ public class mat_marble : Material
 {
     public mat_marble() : base()
     {
+        uniforms.Add("material.diffTex", new Texture("Textures/blank.jpg"));
+        uniforms.Add("material.specTex", new Texture("Textures/blank.jpg"));
         uniforms.Add("material.ambient", new Vector3(0.25f, 0.25f, 0.25f));
         uniforms.Add("material.diffuse", new Vector3(0.75f, 0.75f, 0.75f));
         uniforms.Add("material.specular", new Vector3(0.1f, 0.1f, 0.1f));
         uniforms.Add("material.shininess", 10.0f);
-        
-        uniforms.Add("light.ambient", new Vector3(1.0f, 1.0f, 1.0f));
-        uniforms.Add("light.diffuse", new Vector3(1.0f, 1.0f, 1.0f));
-        uniforms.Add("light.specular", new Vector3(1.0f, 1.0f, 1.0f));
         
         UpdateUniforms();
     }

@@ -13,10 +13,6 @@ public class mat_gold_simple : Material
         SetUniform("material.specular", new Vector3(0.625f, 0.55f, 0.35f));
         SetUniform("material.shininess", 51.2f);
 
-        SetUniform("light.ambient", new Vector3(1.0f));
-        SetUniform("light.diffuse", new Vector3(1.0f));
-        SetUniform("light.specular", new Vector3(1.0f));
-
         UpdateUniforms();
     }
 }
