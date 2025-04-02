@@ -26,7 +26,7 @@ public class DirectionalLight : Light
         LightColor = new Vector3(color.R * LightIntensity, color.G* LightIntensity, color.B* LightIntensity);
         DefaultColor = LightColor;
         
-        CreateVisualizer(currentWorld);
+        //CreateVisualizer(currentWorld);
     }
 
     private void CreateVisualizer(World currentWorld)
