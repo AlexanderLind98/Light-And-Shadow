@@ -170,6 +170,8 @@ public abstract class World
             obj.Dispose();
         }
         
+        // todo: visualizer dispose
+        
         dir_depthShader.Dispose();
 
         GameObjects.Clear();
