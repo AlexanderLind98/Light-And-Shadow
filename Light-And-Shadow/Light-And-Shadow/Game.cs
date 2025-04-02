@@ -17,7 +17,7 @@ namespace Light_And_Shadow
         
         public World currentWorld;
 
-        private bool debugQuad = true;
+        private bool debugQuad = false;
 
         public Game(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)

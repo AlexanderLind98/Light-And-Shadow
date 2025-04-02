@@ -33,6 +33,7 @@ public abstract class World
     public Shader debugShader;
     public QuadMesh quadMesh;
     private int shadowMap;
+    private int shadowResolution = 4096;
 
     protected World(Game game)
     {
@@ -66,6 +67,7 @@ public abstract class World
     public void LoadWorld()
     {
         GL.Enable(EnableCap.DepthTest);
+        GL.Enable(EnableCap.FramebufferSrgb); //Enabling gamma correction - handled by OpenGL
         GL.ClearColor(SkyColor);
 
         //Depth shader
@@ -76,7 +78,7 @@ public abstract class World
         shadowMap = GL.GenTexture();
         GL.BindTexture(TextureTarget.Texture2D, shadowMap);
         GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.DepthComponent,
-            1024, 1024, 0, PixelFormat.DepthComponent, PixelType.Float, IntPtr.Zero);
+            shadowResolution, shadowResolution, 0, PixelFormat.DepthComponent, PixelType.Float, IntPtr.Zero);
 
         // Konfigurer texture parametre
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
@@ -113,7 +115,7 @@ public abstract class World
     public void DrawWorld(FrameEventArgs args, int debugMode)
     {
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-        GL.CullFace(TriangleFace.Front);
+        // GL.CullFace(TriangleFace.Front);
         
         Matrix4 lightProjection = Matrix4.CreateOrthographicOffCenter(-10.0f, 10.0f, -10, 10, 0.1f, 50.0f);
         Matrix4 lightView = Matrix4.LookAt(new Vector3(DirectionalLight.Transform.Position),
@@ -125,7 +127,7 @@ public abstract class World
         dir_depthShader.Use();
         dir_depthShader.SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
         
-        GL.Viewport(0, 0, 1024, 1024);
+        GL.Viewport(0, 0, shadowResolution, shadowResolution);
         GL.BindFramebuffer(FramebufferTarget.Framebuffer, dir_depthMapFBO);
         GL.Clear(ClearBufferMask.DepthBufferBit);
         
