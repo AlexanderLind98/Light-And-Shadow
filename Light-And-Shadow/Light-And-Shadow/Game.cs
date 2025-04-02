@@ -17,6 +17,8 @@ namespace Light_And_Shadow
         
         public World currentWorld;
 
+        private bool debugQuad = true;
+
         public Game(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -63,6 +65,11 @@ namespace Light_And_Shadow
                 Close();
             }
 
+            if (input.IsKeyPressed(Keys.R))
+            {
+                debugQuad = !debugQuad;
+            }
+
             Title = $"{currentWorld.WorldName} | {currentWorld.DebugLabel}";
         }
         
@@ -90,7 +97,8 @@ namespace Light_And_Shadow
             
             currentWorld.DrawWorld(args, DebugMode);
             
-            debugRenderer.Draw(currentWorld.depthMap, Size);
+            if(debugQuad)
+                debugRenderer.Draw(currentWorld.depthMap, Size);
 
             
             SwapBuffers();
