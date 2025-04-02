@@ -115,7 +115,7 @@ public abstract class World
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         GL.CullFace(TriangleFace.Front);
         
-        Matrix4 lightProjection = Matrix4.CreateOrthographicOffCenter(-10.0f, 10.0f, -10, 10, 0.1f, 10.0f);
+        Matrix4 lightProjection = Matrix4.CreateOrthographicOffCenter(-10.0f, 10.0f, -10, 10, 0.1f, 50.0f);
         Matrix4 lightView = Matrix4.LookAt(new Vector3(DirectionalLight.Transform.Position),
             new Vector3(DirectionalLight.Transform.Position + DirectionalLight.Transform.Rotation),
             new Vector3(0.0f, 1.0f, 0.0f));
@@ -144,7 +144,7 @@ public abstract class World
         Vector3 cameraPos = camera.Position;
         foreach (var obj in GameObjects)
         {
-            obj.Draw(viewProjection, camera, this, debugMode);
+            obj.Draw(viewProjection, lightSpaceMatrix, camera, this, debugMode);
         }
     }
 

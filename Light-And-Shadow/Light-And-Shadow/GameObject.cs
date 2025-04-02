@@ -67,7 +67,7 @@ namespace Light_And_Shadow
             }
         }
 
-        public void Draw(Matrix4 viewProjection, Camera camera, World currentWorld, int debugMode = 0)
+        public void Draw(Matrix4 viewProjection, Matrix4 lightSpaceMatrix,  Camera camera, World currentWorld, int debugMode = 0)
         {
             if (Renderer != null)
             {
@@ -78,7 +78,7 @@ namespace Light_And_Shadow
                 Matrix4 mvp = model * viewProjection;
                 
                 // Draw the object.
-                Renderer.Draw(mvp, model, camera, debugMode, currentWorld);
+                Renderer.Draw(mvp, lightSpaceMatrix, model, camera, debugMode, currentWorld);
             }
         }
         

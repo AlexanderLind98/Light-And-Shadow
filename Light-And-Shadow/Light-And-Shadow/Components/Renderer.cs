@@ -32,12 +32,13 @@ namespace Light_And_Shadow.Components
             Mesh = mesh;
         }
 
-        public void Draw(Matrix4 mvp, Matrix4 model, Camera camera, int currentDebugMode, World currentWorld)
+        public void Draw(Matrix4 mvp, Matrix4 lightSpaceMatrix, Matrix4 model, Camera camera, int currentDebugMode, World currentWorld)
         {
             Material.UseShader();
             Material.UpdateUniforms();
             Material.SetUniform("mvp", mvp);
             Material.SetUniform("model", model);
+            Material.SetUniform("lightSpaceMatrix", lightSpaceMatrix);
             Material.SetUniform("shadowMap", currentWorld.depthMap);
 
             Matrix4 normalMatrix = Matrix4.Invert(model);

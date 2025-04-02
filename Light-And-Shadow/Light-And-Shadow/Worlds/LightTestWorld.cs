@@ -45,6 +45,7 @@ public class LightTestWorld : World
             .Model("Ground")
             .Material(new mat_marble())
             .Position(0f, -2f, 0f)
+            .Scale(2, 2 ,2)
             .Build();
         
         statue = new GameObjectBuilder(Game)
