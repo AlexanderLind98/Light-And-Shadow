@@ -12,8 +12,12 @@ namespace Light_And_Shadow
     public class Game : GameWindow
     {
         public int DebugMode { get; set; } = 0;
-
+        
+        private DebugRenderer debugRenderer;
+        
         public World currentWorld;
+
+        private bool debugQuad = false;
 
         public Game(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -28,6 +32,8 @@ namespace Light_And_Shadow
         protected override void OnLoad()
         {
             base.OnLoad();
+            
+            debugRenderer = new DebugRenderer();
             
             currentWorld.LoadWorld();
         }
@@ -59,6 +65,11 @@ namespace Light_And_Shadow
                 Close();
             }
 
+            if (input.IsKeyPressed(Keys.R))
+            {
+                debugQuad = !debugQuad;
+            }
+
             Title = $"{currentWorld.WorldName} | {currentWorld.DebugLabel}";
         }
         
@@ -85,6 +96,10 @@ namespace Light_And_Shadow
             base.OnRenderFrame(args);
             
             currentWorld.DrawWorld(args, DebugMode);
+            
+            if(debugQuad)
+                debugRenderer.Draw(currentWorld.depthMap, Size);
+
             
             SwapBuffers();
         }

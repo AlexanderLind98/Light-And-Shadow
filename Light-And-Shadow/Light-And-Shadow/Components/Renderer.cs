@@ -9,6 +9,8 @@ namespace Light_And_Shadow.Components
     public class Renderer
     {
         private Material _material;
+        private bool DepthTest = true;
+
         public Material Material
         {
             get => _material;
@@ -30,13 +32,15 @@ namespace Light_And_Shadow.Components
             Mesh = mesh;
         }
 
-        public void Draw(Matrix4 mvp, Matrix4 model, Camera camera, int currentDebugMode, World currentWorld)
+        public void Draw(Matrix4 mvp, Matrix4 lightSpaceMatrix, Matrix4 model, Camera camera, int currentDebugMode, World currentWorld)
         {
             Material.UseShader();
             Material.UpdateUniforms();
             Material.SetUniform("mvp", mvp);
             Material.SetUniform("model", model);
-            
+            Material.SetUniform("lightSpaceMatrix", lightSpaceMatrix);
+            Material.SetUniform("shadowMap", currentWorld.depthMap);
+
             Matrix4 normalMatrix = Matrix4.Invert(model);
 
             Material.SetUniform("normalMatrix", normalMatrix); // Correct normal matrix passed to the shader
@@ -118,6 +122,15 @@ namespace Light_And_Shadow.Components
             Material.SetUniform("dirLight.ambient", currentWorld.GetSkyColor() / 2);
             Material.SetUniform("dirLight.diffuse", currentWorld.DirectionalLight.LightColor);
             Material.SetUniform("dirLight.specular", currentWorld.DirectionalLight.LightColor);
+        }
+
+        public void RenderDepth(Shader shader, Matrix4 model)
+        {
+            shader.SetMatrix("model", model);
+            GL.DepthMask(DepthTest);
+            Mesh.Draw();
+            
+            GL.DepthMask(true);
         }
     }
 }

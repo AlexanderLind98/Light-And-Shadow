@@ -41,7 +41,7 @@ namespace Light_And_Shadow.Materials
 
         public Material()
         {
-            shader = new Shader("Shaders/BlinnPhongShader.vert", "Shaders/BlinnPhongShader.frag");
+            shader = new Shader("Shaders/ShadowMappingShader.vert", "Shaders/ShadowMappingShader.frag");
         }
 
         /// <summary>

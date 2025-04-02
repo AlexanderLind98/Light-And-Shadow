@@ -18,9 +18,9 @@ public class LightTestWorld : World
     {
         WorldName = "Light Test World";
 
-        /*SkyColor = Color4.CornflowerBlue;
-        SunColor = Vector3.Zero;
-        DirectionalLight.LightColor = SunColor;*/
+        SkyColor = Color4.CornflowerBlue;
+        // SunColor = Vector3.Zero;
+        // DirectionalLight.LightColor = SunColor;
     }
 
     public override string DebugLabel
@@ -42,9 +42,10 @@ public class LightTestWorld : World
         base.ConstructWorld();
         
         room = new GameObjectBuilder(Game)
-            .Model("Arches")
-            .Material(new mat_box())
+            .Model("Ground")
+            .Material(new mat_marble())
             .Position(0f, -2f, 0f)
+            .Scale(2, 2 ,2)
             .Build();
         
         statue = new GameObjectBuilder(Game)
@@ -73,7 +74,7 @@ public class LightTestWorld : World
         GameObjects.Add(rotatingCube);
         
         new SpotLight(this, Color4.White, 1f, 15.0f, 20.0f);
-        // SpotLights[0].ToggleLight();
+        SpotLights[0].ToggleLight();
     }
 
     public override void HandleInput(KeyboardState input)

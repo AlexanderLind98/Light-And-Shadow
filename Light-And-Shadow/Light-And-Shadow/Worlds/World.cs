@@ -1,5 +1,6 @@
 using Light_And_Shadow.Behaviors;
 using Light_And_Shadow.Lights;
+using Light_And_Shadow.Shapes;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -25,6 +26,15 @@ public abstract class World
     public List<PointLight> PointLights = new();
     public List<SpotLight> SpotLights = new();
 
+    private Shader dir_depthShader;
+    private int dir_depthMapFBO;
+    public Texture depthMap;
+    
+    public Shader debugShader;
+    public QuadMesh quadMesh;
+    private int shadowMap;
+    private int shadowResolution = 4096;
+
     protected World(Game game)
     {
         Game = game;
@@ -33,6 +43,7 @@ public abstract class World
         //Basic Sun
         DirectionalLight = new DirectionalLight(this, Color4.LightYellow, 1);
         DirectionalLight.Transform.Rotation = SunDirection;
+        DirectionalLight.Transform.Position = new Vector3(2, 5, -2);
         DirectionalLight.UpdateVisualizer(this);
     }
 
@@ -56,8 +67,41 @@ public abstract class World
     public void LoadWorld()
     {
         GL.Enable(EnableCap.DepthTest);
-        ConstructWorld();
+        GL.Enable(EnableCap.FramebufferSrgb); //Enabling gamma correction - handled by OpenGL
         GL.ClearColor(SkyColor);
+
+        //Depth shader
+        dir_depthShader = new Shader("Shaders/DirDepth.vert", "Shaders/DirDepth.frag");
+        dir_depthMapFBO = GL.GenFramebuffer();
+        
+        // Opret depth texture
+        shadowMap = GL.GenTexture();
+        GL.BindTexture(TextureTarget.Texture2D, shadowMap);
+        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.DepthComponent,
+            shadowResolution, shadowResolution, 0, PixelFormat.DepthComponent, PixelType.Float, IntPtr.Zero);
+
+        // Konfigurer texture parametre
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToBorder);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToBorder);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBorderColor, new float[] { 1, 1, 1, 1 });
+
+        // Bind til framebuffer
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, dir_depthMapFBO);
+        GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, TextureTarget.Texture2D, shadowMap, 0);
+        GL.DrawBuffer(DrawBufferMode.None);
+        GL.ReadBuffer(ReadBufferMode.None);
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+        
+        depthMap = new Texture(shadowMap);
+        
+        //SetupDebugQuad();
+        
+        GL.Enable(EnableCap.DepthTest);
+        GL.Enable(EnableCap.CullFace);
+        
+        ConstructWorld();
     }
 
     public void UpdateWorld(FrameEventArgs args)
@@ -71,13 +115,38 @@ public abstract class World
     public void DrawWorld(FrameEventArgs args, int debugMode)
     {
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+        // GL.CullFace(TriangleFace.Front);
+        
+        Matrix4 lightProjection = Matrix4.CreateOrthographicOffCenter(-10.0f, 10.0f, -10, 10, 0.1f, 50.0f);
+        Matrix4 lightView = Matrix4.LookAt(new Vector3(DirectionalLight.Transform.Position),
+            new Vector3(DirectionalLight.Transform.Position + DirectionalLight.Transform.Rotation),
+            new Vector3(0.0f, 1.0f, 0.0f));
+        Matrix4 lightSpaceMatrix = lightView * lightProjection;
+        
+        depthMap.Use();
+        dir_depthShader.Use();
+        dir_depthShader.SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
+        
+        GL.Viewport(0, 0, shadowResolution, shadowResolution);
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, dir_depthMapFBO);
+        GL.Clear(ClearBufferMask.DepthBufferBit);
+        
+        GameObjects.ForEach(x => x.RenderDepth(dir_depthShader));
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+        
+        // reset viewport
+        GL.CullFace(TriangleFace.Back);
+        GL.Viewport(0, 0, Game.Size.X, Game.Size.Y);
+        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+        
+        //RenderDebugQuad();
 
         Matrix4 viewProjection = camera.GetViewProjection();
         
         Vector3 cameraPos = camera.Position;
         foreach (var obj in GameObjects)
         {
-            obj.Draw(viewProjection, camera, this, debugMode);
+            obj.Draw(viewProjection, lightSpaceMatrix, camera, this, debugMode);
         }
     }
 
@@ -100,6 +169,8 @@ public abstract class World
         {
             obj.Dispose();
         }
+        
+        dir_depthShader.Dispose();
 
         GameObjects.Clear();
     }
@@ -117,5 +188,31 @@ public abstract class World
 
         //Grab focus for cursor, locking it to window
         Game.CursorState = CursorState.Grabbed;
+    }
+    
+    private void RenderDebugQuad()
+    {
+        // Gem eksisterende viewport
+        int[] fullViewport = new int[4];
+        GL.GetInteger(GetPName.Viewport, fullViewport);
+
+        // Sæt viewport til 1/4 skærmstørrelse (nederste venstre hjørne)
+        GL.Viewport(0, 0, Game.Size.X / 4, Game.Size.Y / 4);
+
+        debugShader.Use();
+        debugShader.SetInt("depthMap", 0);
+        depthMap.Use(); // binder shadowMap til Texture0
+        quadMesh.Draw();
+        
+        // Console.WriteLine("Rendering debug quad");
+
+        // Gendan viewport til fuld skærm
+        GL.Viewport(fullViewport[0], fullViewport[1], fullViewport[2], fullViewport[3]);
+    }
+    
+    private void SetupDebugQuad()
+    {
+        debugShader = new Shader("Shaders/shadowDebugQuad.vert", "Shaders/shadowDebugQuad.frag");
+        quadMesh = new QuadMesh();
     }
 }

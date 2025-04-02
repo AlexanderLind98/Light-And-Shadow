@@ -5,7 +5,7 @@ namespace Light_And_Shadow.Materials;
 public class mat_default : Material
 {
     public mat_default()
-        : base("Shaders/materialLightShader.vert", "Shaders/materialLightShader.frag")
+        : base("Shaders/Old/materialLightShader.vert", "Shaders/Old/materialLightShader.frag")
     {
         SetUniform("material.ambient", new Vector3(0.7f));
         SetUniform("material.diffuse", new Vector3(0.7f));
