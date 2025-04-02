@@ -94,7 +94,7 @@ public abstract class World
         
         depthMap = new Texture(shadowMap);
         
-        SetupDebugQuad();
+        //SetupDebugQuad();
         
         GL.Enable(EnableCap.DepthTest);
         GL.Enable(EnableCap.CullFace);
@@ -137,7 +137,7 @@ public abstract class World
         GL.Viewport(0, 0, Game.Size.X, Game.Size.Y);
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         
-        RenderDebugQuad();
+        //RenderDebugQuad();
 
         Matrix4 viewProjection = camera.GetViewProjection();
         

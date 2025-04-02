@@ -12,7 +12,9 @@ namespace Light_And_Shadow
     public class Game : GameWindow
     {
         public int DebugMode { get; set; } = 0;
-
+        
+        private DebugRenderer debugRenderer;
+        
         public World currentWorld;
 
         public Game(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
@@ -28,6 +30,8 @@ namespace Light_And_Shadow
         protected override void OnLoad()
         {
             base.OnLoad();
+            
+            debugRenderer = new DebugRenderer();
             
             currentWorld.LoadWorld();
         }
@@ -85,6 +89,9 @@ namespace Light_And_Shadow
             base.OnRenderFrame(args);
             
             currentWorld.DrawWorld(args, DebugMode);
+            
+            debugRenderer.Draw(currentWorld.depthMap, Size);
+
             
             SwapBuffers();
         }
