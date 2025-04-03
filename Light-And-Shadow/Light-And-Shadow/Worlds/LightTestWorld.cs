@@ -42,8 +42,8 @@ public class LightTestWorld : World
         base.ConstructWorld();
         
         room = new GameObjectBuilder(Game)
-            .Model("Ground")
-            .Material(new mat_marble())
+            .Model("Arches")
+            .Material(new mat_box())
             .Position(0f, -2f, 0f)
             .Scale(2, 2 ,2)
             .Build();
